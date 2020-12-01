@@ -1,0 +1,49 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Register Name="Utility" Template=".\Utility.cst" MergeProperties="False" %>
+<%--<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Category="Context" %>--%>
+
+<%
+    // ======================= 粘帖待调整源码 =======================
+    var sourceProto = @"
+		public long Id { get; set; }
+        
+        public DateTime CreateTime { get; set; }
+        
+        public DateTime LastUpdateTime { get; set; }
+
+    ";
+    
+    var sourceCgMem = @"[ProtoMember(1)]
+        public long CardId { get; set; }
+
+        [ProtoMember(2)]
+        public long CardGroupId { get; set; }
+
+        [ProtoMember(3)]
+        public long MemberId { get; set; }
+    ";
+    
+    // ======================= 粘帖待调整源码 =======================
+    
+    var pattern_ProtoAdd = @"^([ \t]*)public\s+[\w<>?]+\s+\w+\s+{\s?get;\s?set;\s?}\s*$";
+    var pattern_ProtoUp = @"\[ProtoMember\((\d+)";
+    var patternCg = @"\[CgMember\((\d+)";
+    
+    var order = 0;
+    
+    //ProtoMember 设置
+    var resProtoAdd = Regex.Replace(sourceProto, pattern_ProtoAdd, match => string.Format("{0}[ProtoMember({1})]{2}{3}", match.Groups[1].Value, ++order, "\r\n", match.Value), RegexOptions.Multiline);
+    //sourcePro = Regex.Replace(sourceProto, patternProto_up, match => string.Format("[ProtoMember({0}", ++order), RegexOptions.Multiline);
+    
+
+    //sourceCgMem = Regex.Replace(sourceCgMem, patternCg, match => string.Format("[CgMember({0}", ++orderCg), RegexOptions.Multiline);
+    
+    //ProtoMember替换为CgMember
+    //sourceCgMem = Regex.Replace(sourceCgMem, @"\[ProtoMember\((\d+)", match => string.Format("[CgMember({0}, false, Desc = \"\"", ++order), RegexOptions.Multiline);
+
+    var output = resProtoAdd;
+%>
+
+<%= output %>

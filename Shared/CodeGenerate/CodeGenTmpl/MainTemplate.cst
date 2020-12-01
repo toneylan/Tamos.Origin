@@ -1,0 +1,31 @@
+﻿<%@ Template Language="C#" TargetLanguage="C#" %>
+<%@ Register Name="Utility" Template=".\Templates\Utility.cst" MergeProperties="False" %>
+<%@ Register Name="DataEntityTpl" Template=".\Templates\DataEntity.cst" MergeProperties="False" %>
+<%@ Register Name="DTOTpl" Template=".\Templates\DTO.cst" MergeProperties="False" %>
+
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Category="Context" %>
+<%@ Property Name="OutputPath" Type="String" Category="Context" Default="CodeOutput" %>
+<%@ Property Name="NameSpace" Type="String" Category="Context" %>
+
+<%
+    //Entity Framework 实体模板
+    var entityTemplate = new DataEntityTpl();
+    //DTO 模板
+    var dtoTemplate = new DTOTpl();
+    foreach(var table in SourceDatabase.Tables)
+    {
+        //if(table.Name != "payment_transaction")continue;
+        var objName = Utility.FormatDBNaming(table.Name);
+        
+        entityTemplate.SetProperty("SourceTable", table);
+        entityTemplate.SetProperty("NameSpace", NameSpace + ".DataAccess.Entity");
+        
+        dtoTemplate.SetProperty("SourceTable", table);
+        dtoTemplate.SetProperty("NameSpace", NameSpace + ".DTO");
+        
+        string entityPath = string.Format(@"{0}\Entity\{1}.cs", OutputPath, objName);
+        string dtoPath = string.Format(@"{0}\DTO\{1}DTO.cs", OutputPath, objName);
+        entityTemplate.RenderToFile(entityPath, true);
+        dtoTemplate.RenderToFile(dtoPath, true);
+    }
+%>

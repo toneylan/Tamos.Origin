@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\Bonny.ServicePlus\Shared\LibExternal\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Tamos.AbleOrigin">
+      <HintPath>..\..\Shared\LibInternal\Tamos.AbleOrigin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!--<Exec Command="if $(ConfigurationName)==Release (&#xD;&#xA;  copy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)..\..\..\..\Bonny\Bonny.ServicePlus\Shared\LibInternal\&quot;&#xD;&#xA;)" />-->
+    <Exec Command="if $(ConfigurationName)==Release (&#xD;&#xA;  call $(ProjectDir)..\..\Shared\LibInternal\CopyDll.bat $(TargetDir)$(TargetName)&#xD;&#xA;  call $(ProjectDir)..\..\Shared\LibInternal\CopyToBonny.bat $(TargetDir)$(TargetName)&#xD;&#xA;)" />
+  </Target>
+
+</Project>

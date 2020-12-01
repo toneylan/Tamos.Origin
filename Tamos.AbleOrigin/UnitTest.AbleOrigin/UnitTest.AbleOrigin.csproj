@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    
+    <PackageReference Include="protobuf-net.Grpc.Native" />
+    <PackageReference Include="Grpc.Net.Client" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.4" />
+    <PackageReference Include="Grpc.Tools" Version="2.27.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
+    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tamos.MetaCoding\Tamos.MetaCoding.GeneratorDesign\Tamos.MetaCoding.GeneratorDesign.csproj" />
+    <ProjectReference Include="..\..\Tamos.MetaCoding\Tamos.MetaCoding.ReplanUI\Tamos.MetaCoding.ReplanUI.csproj" />
+    <ProjectReference Include="..\Tamos.AbleOrigin.Booster\Tamos.AbleOrigin.Booster.csproj" />
+    <ProjectReference Include="..\Tamos.AbleOrigin.DataPersist\Tamos.AbleOrigin.DataPersist.csproj" />
+    <ProjectReference Include="..\Tamos.AbleOrigin.DataProto\Tamos.AbleOrigin.DataProto.csproj" />
+    <ProjectReference Include="..\Tamos.AbleOrigin\Tamos.AbleOrigin.csproj" />
+  </ItemGroup>
+
+</Project>

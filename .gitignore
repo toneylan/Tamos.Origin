@@ -1,0 +1,15 @@
+# .net file or folders
+[Bb]in/
+[Oo]bj/
+aspnet_client/
+*.suo
+*.user
+[Ll]ogs/
+*.svclog
+.vs/
+
+# NuGet Packages Directory
+packages
+
+#Specific
+Shared/CodeGenerate/CodeGenTmpl/CodeOutput

@@ -1,0 +1,32 @@
+<Project>
+  <ItemGroup>
+    <PackageReference Update="log4net" Version="2.0.8" />
+    <PackageReference Update="Consul" Version="1.6.1.1" />
+    <PackageReference Update="SimpleInjector" Version="5.0.2" />
+    <PackageReference Update="RabbitMQ.Client" Version="6.0.0" />
+    <PackageReference Update="CSRedisCore" Version="3.6.3" />
+    <PackageReference Update="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Update="Exceptionless" Version="4.4.0" />
+    <PackageReference Update="Exceptionless.Log4net" Version="4.4.0" />
+    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="3.2.0" />
+	<PackageReference Update="NPOI" Version="2.5.1" />
+    
+	<PackageReference Update="Grpc.Core" Version="2.29.*" />
+    <PackageReference Update="Grpc.Core.Api" Version="2.29.*" />
+	<PackageReference Update="Grpc.Net.Common" Version="2.29.*" />
+    <PackageReference Update="Grpc.Net.Client" Version="2.29.*" />
+    <PackageReference Update="protobuf-net.Grpc" Version="1.0.*" />
+    <PackageReference Update="protobuf-net.Grpc.Native" Version="1.0.*" />
+    
+    <PackageReference Update="System.ServiceModel.Primitives" Version="4.7.0" />
+    <PackageReference Update="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Update="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="3.1.8" />
+    <PackageReference Update="Microsoft.Extensions.Configuration.Json" Version="3.1.8" />
+    <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="3.1.8" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="*.csproj.DotSettings" />
+  </ItemGroup>
+</Project>

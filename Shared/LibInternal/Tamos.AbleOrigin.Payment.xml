@@ -1,0 +1,447 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tamos.AbleOrigin.Payment</name>
+    </assembly>
+    <members>
+        <member name="T:Tamos.AbleOrigin.Payment.IOrderProcessor">
+            <summary>
+            定义支付相关的订单处理方法
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.IOrderProcessor.OnOrderPaid(Tamos.AbleOrigin.DataProto.Payment.OrderProcessPara)">
+            <summary>
+            该接口会在具体应用系统里实现，当支付回调被确认为付款成功时，会自动调用该接口，以执行具体的支付成功逻辑。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.AppId">
+            <summary>
+            支付应用标识
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.AppKey">
+            <summary>
+            交易过程生成签名的密钥
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.MerchantAccount">
+            <summary>
+            商户/卖家账户
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.SubAppId">
+            <summary>
+            服务商模式的子应用Id
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.SubMerAccount">
+            <summary>
+            服务商模式的子商户
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.ExtPrivateKey">
+            <summary>
+            额外私钥
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.ApiCertPath">
+            <summary>
+            证书绝对路径（如微信支付退款、撤销订单时需要）
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.ApiCertPwd">
+            <summary>
+            证书密码
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.CommonPayConfig.NotifyUrl">
+            <summary>
+            支付结果通知回调url（通常是支付平台异步通知）
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.ParaDataBase">
+            <summary>
+            通用接口参数数据的基类，简化参数设置、加密、签名等操作
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.ParaDataBase.MakeSign(System.String)">
+            <summary>
+            将参数数据生成签名
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Tamos.AbleOrigin.Payment.ParaDataBase.ToHttpPara" -->
+        <member name="T:Tamos.AbleOrigin.Payment.PaymentContext">
+            <summary>
+            支付的上下文信息
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.TransactionId">
+            <summary>
+            支付流水号，通常对应支付平台的“out_trade_no”参数
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.TotalFee">
+            <summary>
+            需要支付的总金额
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.PayExpireTime">
+            <summary>
+            支付超时时间
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.PayCode">
+            <summary>
+            付款码，如微信、支付宝的支付授权码
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.Title">
+            <summary>
+            支付信息标题
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.Description">
+            <summary>
+            支付信息描述
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentContext.Item(System.String)">
+            <summary>
+            get/set 其他支付参数
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.RefundContext">
+            <summary>
+            退款上下文
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.RefundContext.TargetTranId">
+            <summary>
+            待退款的支付流水号
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.RefundContext.RefundAmount">
+            <summary>
+            退款金额 元
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.PaymentFacade">
+            <summary>
+            支付流程类Facade
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Payment.PaymentFacade.GatewayBuilders">
+            <summary>
+            让具体应用可扩展实现支付渠道。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentFacade.Create(Tamos.AbleOrigin.DataProto.Payment.PayGatewayTypes,Tamos.AbleOrigin.Payment.CommonPayConfig)">
+            <summary>
+            通过支付渠道及配置信息，创建PaymentFacade。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentFacade.DumpRequestToFile(Microsoft.AspNetCore.Http.HttpRequest,System.String)">
+            <summary>
+            导出Http请求信息并保存为文件
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentFacade.PayRequest(Tamos.AbleOrigin.Payment.PaymentContext)">
+            <summary>
+            处理支付请求
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentFacade.PayNotify(Microsoft.AspNetCore.Http.HttpContext,Tamos.AbleOrigin.Payment.IOrderProcessor)">
+            <summary>
+            处理支付结果通知
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentFacade.Refund(Tamos.AbleOrigin.Payment.RefundContext)">
+            <summary>
+            支付退款
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentFacade.QueryPaymentResult(System.Int64,Tamos.AbleOrigin.Payment.IOrderProcessor)">
+            <summary>
+            查询支付结果
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentGatewayBase.ProcessPayRequest(Tamos.AbleOrigin.Payment.PaymentContext)">
+            <summary>
+            处理支付请求
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentGatewayBase.ProcessPayNotify(Microsoft.AspNetCore.Http.HttpContext,Tamos.AbleOrigin.Payment.IOrderProcessor)">
+            <summary>
+            处理支付平台的结果通知
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentGatewayBase.ProcessRefund(Tamos.AbleOrigin.Payment.RefundContext)">
+            <summary>
+            处理支付退款
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentGatewayBase.QueryPaymentResult(System.Int64,Tamos.AbleOrigin.Payment.IOrderProcessor)">
+            <summary>
+            查询支付结果
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentGatewayBase.ReadRequestBody(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            读取HttpRequest Body数据
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.PaymentGatewayBase.DumpRequestToFile(Microsoft.AspNetCore.Http.HttpRequest,System.String)">
+            <summary>
+            导出Http请求信息并保存为文件
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxObjExtend.Set(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.String,System.String)">
+            <summary>
+            非空的值才会被设置
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.WxPay.WxPayConfig">
+            <summary>
+            配置账号信息
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.WxPay.WxPayData">
+            <summary>
+            微信支付协议接口数据类，所有的API接口通信都依赖这个数据结构，
+            在调用接口之前先填充各个字段的值，然后进行接口通信，
+            这样设计的好处是可扩展性强，用户可随意对协议进行更改而不用重新设计数据结构，
+            还可以随意组合出不同的协议数据包，不用为每个协议设计一个数据包结构
+            </summary>
+        </member>
+        <member name="F:Tamos.AbleOrigin.Payment.WxPay.WxPayData.Config">
+            <summary>
+            支付配置
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.SetValue(System.String,System.Object)">
+                    * 设置某个字段的值
+                    * @param key 字段名
+                     * @param value 字段值
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.GetValue(System.String)">
+                    * 根据字段名获取某个字段的值
+                    * @param key 字段名
+                     * @return key对应的字段值
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.IsSet(System.String)">
+            判断某个字段是否已设置
+            @param key 字段名
+            @return 若字段key已被设置，则返回true，否则返回false
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.ToXml">
+             @将Dictionary转成xml
+             @return 经转换得到的xml串
+             @throws WxPayException
+            
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.FromXml(System.String)">
+            @将xml转为WxPayData对象并返回对象内部的数据
+            @param string 待转换的xml串
+            @return 经转换得到的Dictionary
+            @throws WxPayException
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.ToUrl">
+            @Dictionary格式转化成url参数格式
+            @ return url格式串, 该串不包含sign字段值
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.ToJson">
+                    * @Dictionary格式化成Json
+                     * @return json串数据
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.ToPrintStr">
+            @values格式化成能在Web页面上显示的结果（因为web页面上不能直接输出xml格式的字符串）
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.MakeSign(System.String)">
+            @生成签名，详见签名生成算法
+            @return 签名, sign字段不参加签名
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.MakeSign">
+            @生成签名，详见签名生成算法
+            @return 签名, sign字段不参加签名 SHA256
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.CheckSign(System.String)">
+            
+            检测签名是否正确
+            正确返回true，错误抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.CheckSign">
+            
+            检测签名是否正确
+            正确返回true，错误抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayData.GetValues">
+            @获取Dictionary
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.WxPay.HttpService">
+            <summary>
+            http连接基础类，负责底层的http通信
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.HttpService.Get(System.String)">
+            <summary>
+            处理http GET请求，返回数据
+            </summary>
+            <param name="url">请求的url地址</param>
+            <returns>http GET成功后返回的数据，失败抛WebException异常</returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.Log.Debug(System.String,System.String)">
+            向日志写入调试信息
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.Log.Info(System.String,System.String)">
+            向日志写入运行时信息
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.Log.Error(System.String,System.String)">
+            向日志写入出错信息
+            @param className 类名
+            @param content 写入内容
+        </member>
+        <member name="T:Tamos.AbleOrigin.Payment.WxPay.Notify">
+            <summary>
+            回调处理基类
+            主要负责接收微信支付后台发送过来的数据，对数据进行签名验证
+            子类在此类基础上进行派生并重写自己的回调处理过程
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.Notify.GetNotifyData(Microsoft.AspNetCore.Http.HttpRequest,Tamos.AbleOrigin.Payment.WxPay.IConfig,System.String@)">
+            <summary>
+            接收从微信支付后台发送过来的数据并验证签名
+            </summary>
+            <returns>微信支付后台返回的数据</returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.Micropay(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            提交被扫支付API
+            收银员使用扫码设备读取微信用户刷卡授权码以后，二维码或条码信息传送至商户收银台，
+            由商户收银台或者商户后台调用该接口发起支付。
+            @param WxPayData inputObj 提交给被扫支付API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回调用结果，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.OrderQuery(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+               
+            查询订单
+            @param WxPayData inputObj 提交给查询订单API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回订单查询结果，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.Reverse(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            撤销订单API接口
+            @param WxPayData inputObj 提交给撤销订单API接口的参数，out_trade_no和transaction_id必填一个
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回API调用结果，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.Refund(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            申请退款
+            @param WxPayData inputObj 提交给申请退款API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回接口调用结果，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.RefundQuery(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            查询退款
+            提交退款申请后，通过该接口查询退款状态。退款有一定延时，
+            用零钱支付的退款20分钟内到账，银行卡支付的退款3个工作日后重新查询退款状态。
+            out_refund_no、out_trade_no、transaction_id、refund_id四个参数必填一个
+            @param WxPayData inputObj 提交给查询退款API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.DownloadBill(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            下载对账单
+            @param WxPayData inputObj 提交给下载对账单API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.ShortUrl(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            转换短链接
+            该接口主要用于扫码原生支付模式一中的二维码链接转成短链接(weixin://wxpay/s/XXXXXX)，
+            减小二维码数据量，提升扫描速度和精确度。
+            @param WxPayData inputObj 提交给转换短连接API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.UnifiedOrder(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            统一下单
+            @param WxPaydata inputObj 提交给统一下单API的参数
+            @param int timeOut 超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.CloseOrder(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            关闭订单
+            @param WxPayData inputObj 提交给关闭订单API的参数
+            @param int timeOut 接口超时时间
+            @throws WxPayException
+            @return 成功时返回，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.ReportCostTime(System.String,System.Int32,Tamos.AbleOrigin.Payment.WxPay.WxPayData)">
+            
+            测速上报
+            @param string interface_url 接口URL
+            @param int timeCost 接口耗时
+            @param WxPayData inputObj参数数组
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.Report(Tamos.AbleOrigin.Payment.WxPay.WxPayData,System.Int32)">
+            
+            测速上报接口实现
+            @param WxPayData inputObj 提交给测速上报接口的参数
+            @param int timeOut 测速上报接口超时时间
+            @throws WxPayException
+            @return 成功时返回测速上报接口返回的结果，其他抛异常
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.GenerateTimeStamp">
+                    * 生成时间戳，标准北京时间，时区为东八区，自1970年1月1日 0点0分0秒以来的秒数
+                     * @return 时间戳
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayApi.GenerateNonceStr">
+            生成随机串，随机串包含字母或数字
+            @return 随机串
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxJsApiPayGateway.GetJsApiParameters(System.String,System.Boolean)">
+            <summary>
+            从统一下单成功返回的数据中获取微信浏览器调起jsapi支付所需的参数，
+            更详细的说明请参考网页端调起支付API：http://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayGatewayBase.CheckAndSetRequestPara(Tamos.AbleOrigin.Payment.PaymentContext,System.String,Tamos.AbleOrigin.Payment.WxPay.WxPayData@)">
+            <summary>
+            检查并设置统一下单参数
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayGatewayBase.IsResultSuccess(Tamos.AbleOrigin.Payment.WxPay.WxPayData)">
+            <summary>
+            判断调用结果是否成功
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayGatewayBase.HandlePayNotify(Microsoft.AspNetCore.Http.HttpContext,Tamos.AbleOrigin.Payment.IOrderProcessor)">
+            <summary>
+            处理支付结果通知
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Payment.WxPay.WxPayGatewayBase.QueryOrderSuccess(System.String,System.String)">
+            <summary>
+            使用微信流水号查询订单是否成功
+            </summary>
+        </member>
+    </members>
+</doc>

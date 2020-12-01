@@ -1,0 +1,26 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer.Extensions" %>
+<%@ Register Name="Utility" Template=".\Utility.cst" MergeProperties="False" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Category="Context" %>
+<%@ Property Name="NameSpace" Type="System.String" Category="Context" Default="Aotran" %>
+
+using <%= NameSpace %>.DTO;
+using <%= NameSpace %>.DataAccess.Entity;
+using Tamos.AbleOrigin.DataPersist;
+using ServiceBase = Tamos.AbleOrigin.ServiceBase.BaseServiceComponent;
+
+namespace <%= NameSpace %>.DataAccess
+{
+    public static class DataAccessorDefine
+    {
+        private static readonly FastAccessorBuilder<MainDbContext> MainDb = new FastAccessorBuilder<MainDbContext>();
+        
+<% foreach(var table in SourceDatabase.Tables){ 
+        var entName = Utility.FormatDBNaming(table.Name);
+%>
+        public static FastAccessor<<%= entName %>DTO, <%= entName %>> <%= entName %>Acs(this ServiceBase service) => MainDb.Get<<%= entName %>DTO, <%= entName %>>(service);
+<% } %>
+    }
+}

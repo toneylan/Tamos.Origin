@@ -1,0 +1,31 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer.Extensions" %>
+<%@ Register Name="Utility" Template="Utility.cst" MergeProperties="False" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" %>
+<%@ Property Name="NameSpace" Default="Aotran" Type="System.String" Category="Context" %>
+<% 
+    var entityName = Utility.FormatDBNaming(SourceTable.Name);
+%>
+using System;
+using Tamos.AbleOrigin.DataProto;
+
+namespace <%= NameSpace %>
+{
+    public class <%= entityName %>DTO : IGeneralEntity
+    {
+	<% for (int i = 0; i < SourceTable.Columns.Count; i++) { 
+            var column = SourceTable.Columns[i];
+            if(!string.IsNullOrEmpty(column.Description)) {
+        %>
+        /// <summary>
+        /// <%= column.Description %>
+        /// </summary>
+        <% }
+        %>
+		public <%= Utility.GetColType(column, Utility.NeedType.ColType) %> <%= Utility.FormatDBNaming(column.Name) %> { get; set; }
+        
+	<% } %>
+	}
+}

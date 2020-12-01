@@ -1,0 +1,495 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tamos.AbleOrigin.DataPersist</name>
+    </assembly>
+    <members>
+        <member name="M:Tamos.AbleOrigin.DataPersist.BondObj`2.CvtObj">
+            <summary>
+            设置子列表并返回Data
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.JoinObj`2">
+            <summary>
+            EF Core 3目前不支持GroupJoin，此对象保存Join查询结果，然后再执行Group。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.JoinObj`2.Item">
+            <summary>
+            Left join 时可能为null
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.GetByParent``2(Tamos.AbleOrigin.DataPersist.FastAccessor{``0,``1},System.Int64)">
+            <summary>
+            按父级Id查询
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.GetWithSub``4(Tamos.AbleOrigin.DataPersist.FastAccessor{``0,``1},System.Int64,Tamos.AbleOrigin.DataPersist.FastAccessor{``2,``3})">
+            <summary>
+            将子级数据一并查出
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.FillProperty``2(System.Collections.Generic.IReadOnlyCollection{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``0,System.Int64},Tamos.AbleOrigin.DataPersist.IFastAccessor{``1})">
+            <summary>
+            依据列表数据的关联Id，查询关联的记录并填充到相应的属性值。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.CvtObj``2(System.Collections.Generic.IReadOnlyList{Tamos.AbleOrigin.DataPersist.JoinObj{``0,``1}})">
+            <summary>
+            注意！确保列表的TOuter是单个记录（Join造成的重复）。返回单个TOuter并设置TInner到SubItems。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.CvtList``2(System.Collections.Generic.IReadOnlyList{Tamos.AbleOrigin.DataPersist.JoinObj{``0,``1}},System.Action{``0,System.Collections.Generic.List{``1}})">
+            <summary>
+            对Id一对多Join查询结果，转换为GroupBy Id的列表，同时把Inner列表设置到Outer子项上。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.PagingQuery``2(System.Collections.Generic.IReadOnlyList{``0},System.Func{``0,System.Linq.IQueryable{``1}},Tamos.AbleOrigin.DataProto.IPagingQueryPara)">
+            <summary>
+            按分页参数查询
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.ToPagingList``1(System.Linq.IQueryable{``0},Tamos.AbleOrigin.DataProto.IPagingQueryPara)">
+            <summary>
+            按分页参数查询结果
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbObjExtend.Today(Tamos.AbleOrigin.DataPersist.ShardScopeType)">
+            <summary>
+            DateTime.Today 在当前ScopeType下的ContextScope。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.EntityDbMap">
+            <summary>
+            实体与数据库的Map信息
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.EntityDbMap.TableName">
+            <summary>
+            分表Entity时不可用
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.EntityDbMap.Col(System.String)">
+            <summary>
+            获取属性名对应的数据库列名
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ComparedContext">
+            <summary>
+            数据比对的上下文
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ComparedSetter`1">
+            <summary>
+            同步行为设置
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ComparedSetter`1.OnAdd">
+            <summary>
+            数据库添加操作前执行，返回false将取消
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ComparedSetter`1.OnDelete">
+            <summary>
+            数据库删除操作前执行，返回false将取消
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.HierarchyCompSetter`2.OnAppendSub">
+            <summary>
+            当存在主记录(T为SyncItem)，追加明细
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.HierarchyCompSetter`2.OnRemoveSub">
+            <summary>
+            当存在主记录(T为SyncItem)，移除数据库中多余明细
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.HierarchyCompSetter`2.GetSubUpdateSet(`0)">
+            <summary>
+            构造子项的更新设置
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.IDataComparable`1">
+            <summary>
+            指导数据的比对操作
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.IHierarchyComparable`2">
+            <summary>
+            层级数据的比对操作
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.BaseDbContext.RunSql(System.String,System.String)">
+            <summary>
+            打开新的DbContext来执行Sql语句
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.BaseDbContext.#ctor(Tamos.AbleOrigin.DataPersist.DbTransactionContext)">
+            <summary>
+            ShardingDb不能直接调用，构造时Scope为空，DynamicModelCacheKeyFactory会报错。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.BaseRepository.DbCreater``1">
+            <summary>
+            创建DbCreater（主要用于子类调用，会确保Db的静态构造函数被调用-RegDb）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.BaseRepository.CompareDataChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0},System.Func{``0,Microsoft.EntityFrameworkCore.DbSet{``0}},Tamos.AbleOrigin.DataPersist.ComparedSetter{``0})">
+            <summary>
+            对比同步数据修改，并执行增、改、删操作
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.BaseRepository.CompareHierarchyData``2(System.Collections.Generic.ICollection{``0},System.Collections.Generic.ICollection{``0},System.Func{``0,Microsoft.EntityFrameworkCore.DbSet{``0}},System.Func{``0,Microsoft.EntityFrameworkCore.DbSet{``1}},Tamos.AbleOrigin.DataPersist.HierarchyCompSetter{``0,``1})">
+            <summary>
+            包含子项数据的修改对比，并执行增、改、删操作
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ShardDbConstructor`1">
+            <summary>
+            分表Db的构造方法（解决目前的泛型，不支持带参构造函数约束）
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ShardDbConstructor`1.NewDb">
+            <summary>
+            创建Db的方法
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ShardDbConstructor`1.NewDbInTran">
+            <summary>
+            创建事务中的Db
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.DbCreater`1">
+            <summary>
+            实现DbContext的创建及缓存。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.DbCreater`1.GetDb">
+            <summary>
+            获取或新建实例
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.IDbCreater`1">
+            <summary>
+            常规DbContext的Creater。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IDbCreater`1.GetDb">
+            <summary>
+            获取Db实例
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.IShardingDbCreater`1">
+            <summary>
+            分表DbContext的Creater。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IShardingDbCreater`1.By(Tamos.AbleOrigin.DataPersist.ContextScope)">
+            <summary>
+            按Scope获取ShardingDb
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IShardingDbCreater`1.By(System.DateTime)">
+            <summary>
+            按时间获取ShardingDb
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IShardingDbCreater`1.By(System.DateTime,System.DateTime,System.Boolean)">
+            <summary>
+            获取时间范围的ShardingDb，时间倒序排列
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IShardingDbCreater`1.By(System.Int64)">
+            <summary>
+            按Id解析时间以获取Db
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IShardingDbCreater`1.By(System.Collections.Generic.IReadOnlyCollection{System.Int64})">
+            <summary>
+            Id列表解析时间范围，以获取Db
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ContextScope">
+            <summary>
+            表示ShardingDbContext的分表范围，比如时间、Id范围等
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ContextScope.OriginalPart">
+            <summary>
+            原始未分表部分（归档）
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ContextScope.ScopeType">
+            <summary>
+            分表的范围类型
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ContextScope.TablePostfix">
+            <summary>
+            分表后缀名
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ContextScope.MaxShardEndDate">
+            <summary>
+            最大的分表时间，防止创建太多未来时间的分表
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ContextScope.PrevScopeEnd">
+            <summary>
+            前一范围的结束时间
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ContextScope.Contains(System.DateTime)">
+            <summary>
+            是否包含了指定时间
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ShardScopeType">
+            <summary>
+            分表范围的类型
+            </summary>
+        </member>
+        <member name="F:Tamos.AbleOrigin.DataPersist.ShardScopeType.Quarter">
+            <summary>
+            三个月
+            </summary>
+        </member>
+        <member name="F:Tamos.AbleOrigin.DataPersist.ShardScopeType.Year">
+            <summary>
+            一年
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbContext.RegDb``1(Tamos.AbleOrigin.DataPersist.ShardScopeType,System.Func{Tamos.AbleOrigin.DataPersist.ContextScope,``0},System.Func{Tamos.AbleOrigin.DataPersist.ContextScope,Tamos.AbleOrigin.DataPersist.DbTransactionContext,``0})">
+            <summary>
+            注册Db类型，并设置Db类型信息（设置后可使用ShardingDbCreater）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbContext.EnsureDbTypeReg(System.Type)">
+            <summary>
+            确保执行DbType的静态构造函数，以初始化配置
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ShardingDbConfig.CheckedPostfix">
+            <summary>
+            检查过的表Postfix
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ShardingDbTypeDefine`1">
+            <summary>
+            特定类型ShardingDb配置，派生泛型类，便于Dictionary保存ShardingDbConfig。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.ShardingDbTypeDefine`1.DbConstructor">
+            <summary>
+            创建实例的方法定义
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1">
+            <summary>
+            ShardingDb的创建辅助类，创建的Db会缓存起来，跟随Creater一起释放。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.Create(Tamos.AbleOrigin.DataPersist.ContextScope)">
+            <summary>
+            创建新的Db实例
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.GetDb(Tamos.AbleOrigin.DataPersist.ContextScope)">
+            <summary>
+            获取或新建实例
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.By(Tamos.AbleOrigin.DataPersist.ContextScope)">
+            <summary>
+            按Scope获取ShardingDb
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.By(System.DateTime)">
+            <summary>
+            按时间获取ShardingDb
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.By(System.DateTime,System.DateTime,System.Boolean)">
+            <summary>
+            获取时间范围的ShardingDb，时间倒序排列
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.By(System.Int64)">
+            <summary>
+            按Id解析时间以获取Db
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.By(System.Collections.Generic.IReadOnlyCollection{System.Int64})">
+            <summary>
+            Id列表解析时间范围，以获取Db
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.InTran``1(System.Int64,Tamos.AbleOrigin.DataPersist.DbTransactionContext,System.Func{`0,``0})">
+            <summary>
+            创建事务中的Db，执行后Db会被释放（用了using）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.Scope(System.DateTime)">
+            <summary>
+            按时间创建Scope
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardingDbCreater`1.Scope(System.DateTime,System.DateTime,System.Boolean)">
+            <summary>
+            按时间范围创建Scope，范围错误时，可能为空。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.BaseFastAccessor">
+            <summary>
+            实现Id为主键的数据，Db记录的快速存取。<br/>
+            轻量级创建，如一个BaseServiceComponent类中，可同时为多个表创建Accessor，DbContext被缓存与共享。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.FastAccessor`2">
+            <summary>
+            实现Id为主键的数据，Db记录的快速访问器。<br/>
+            轻量级创建，如一个BaseServiceComponent类中，可同时为多个表创建Accessor，DbContext被缓存与共享。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Db">
+            <summary>
+            获取Db实例
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Queryable">
+            <summary>
+            获取IQueryable实例AsNoTracking
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Get(System.Int64)">
+            <summary>
+            依据Id获取单个记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Get(System.Collections.Generic.IReadOnlyCollection{System.Int64})">
+            <summary>
+            依据Id列表获取
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.FirstOrDefault(System.Linq.Expressions.Expression{System.Func{`1,System.Boolean}})">
+            <summary>
+            按条件查询首条记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.QueryList(System.Linq.Expressions.Expression{System.Func{`1,System.Boolean}})">
+            <summary>
+            按条件查询列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Add(`0)">
+            <summary>
+            添加记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Add(`1)">
+            <summary>
+            添加记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Update(System.Int64,System.Action{`1})">
+            <summary>
+            更新存储的记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Delete(System.Int64)">
+            <summary>
+            按Id删除记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Delete(System.Int64,System.Action{`1})">
+            <summary>
+            按Id删除记录，成功后执行回调
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.Delete(System.Collections.Generic.List{System.Int64})">
+            <summary>
+            按Id删除记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessor`2.UpdateBySql(System.Int64,System.Func{Tamos.AbleOrigin.DataPersist.EntityDbMap,System.String})">
+            <summary>
+            执行Sql语句来更新，只修改等于Id的一行。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastAccessorBuilder`1.Get``2(Tamos.AbleOrigin.ServiceBase.BaseServiceComponent)">
+            <summary>
+            获取访问器（会缓存于service实例）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.ShardAccessorBuilder`1.Get``2(Tamos.AbleOrigin.ServiceBase.BaseServiceComponent)">
+            <summary>
+            获取访问器（会缓存于service实例）
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2">
+            <summary>
+            分表访问器，Id为主键且用于解析时间。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Queryable(Tamos.AbleOrigin.DataPersist.ShardingDbContext)">
+            <summary>
+            获取IQueryable实例AsNoTracking
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Get(System.Int64)">
+            <summary>
+            依据Id获取单个记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Get(System.DateTime,System.Linq.Expressions.Expression{System.Func{`1,System.Boolean}})">
+            <summary>
+            按条件获取首条记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Get(System.Collections.Generic.IReadOnlyCollection{System.Int64})">
+            <summary>
+            依据Id列表获取
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.QueryList(System.DateTime,System.DateTime,System.Linq.Expressions.Expression{System.Func{`1,System.Boolean}})">
+            <summary>
+            按条件查询列表，时间仅用于定位分表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.QueryList(System.DateTime,System.DateTime,System.Func{System.Linq.IQueryable{`1},System.Linq.IQueryable{`1}})">
+            <summary>
+            按条件查询列表，时间仅用于定位分表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Add(`1)">
+            <summary>
+            添加记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Update(System.Int64,System.Action{`1})">
+            <summary>
+            更新存储的记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.FastShardAccessor`2.Delete(System.Int64)">
+            <summary>
+            按Id删除记录
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DataPersist.IFastAccessor`1">
+            <summary>
+            普通记录的快速访问器接口
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IFastAccessor`1.Get(System.Int64)">
+            <summary>
+            依据Id获取单个记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DataPersist.IFastAccessor`1.Get(System.Collections.Generic.IReadOnlyCollection{System.Int64})">
+            <summary>
+            依据Id列表获取
+            </summary>
+        </member>
+    </members>
+</doc>

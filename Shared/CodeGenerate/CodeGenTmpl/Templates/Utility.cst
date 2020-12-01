@@ -1,0 +1,142 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Utility method for template" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<script runat="template">
+	public enum NeedType
+	{
+		ColType, DBType, DBFullType, Convert
+	}
+	
+	public static string GetColType(ColumnSchema column, NeedType rType)
+	{
+		string ColType = "string";
+		string DBType = "nvarchar";
+		string DBFullType = "DbType.Nvarchar";
+		string ConvertF = "dr.GetString({0})";
+        
+		switch (column.DataType)
+		{
+			case DbType.Int16:
+				{
+					ColType = "short" +  (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "smallint";
+					DBFullType = "DbType.Int16";
+					ConvertF = "dr.GetInt16({0})";
+					break;
+				}
+			case DbType.Int32:
+				{
+                    ColType = "int" +   (column.AllowDBNull ? "?" : string.Empty);
+    				DBType = "int";
+    				DBFullType = "DbType.Int32";
+					break;
+				}
+			case DbType.Int64:
+				{
+					ColType = "long" +   (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "bigint";
+					DBFullType = "DbType.Int64";
+					ConvertF = "dr.GetInt64({0})";
+					break;
+				}
+            case DbType.Double:
+				{
+					ColType = "double" +  (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "double";
+					DBFullType = "DbType.Double";
+					ConvertF = "Convert.ToDouble(dr[{0}])";
+					break;
+				}
+			case DbType.Decimal:
+				{
+					ColType = "decimal" +   (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "decimal(" + column.Size + "," + column.Precision + ")";
+					DBFullType = "DbType.Decimal";
+					ConvertF = "Convert.ToDecimal(dr[{0}])";
+					break;
+				}
+			case DbType.String:
+				{
+					ColType = "string";
+					DBType = "nvarchar(" + (column.Size == -1 ? "Max" : column.Size.ToString()) + ")";
+					DBFullType = "DbType.String";
+					ConvertF = "dr.GetString({0})";
+					break;
+				}
+			case DbType.StringFixedLength:
+				{
+					ColType = "string";
+					DBType = "nchar(" + column.Size.ToString() + ")";
+					DBFullType = "DbType.StringFixedLength";
+					ConvertF = "dr.GetString({0})";
+					break;
+				}
+			case DbType.AnsiString:
+				{
+					ColType = "string";
+					DBType = "varchar(" + (column.Size == -1 ? "Max" : column.Size.ToString()) + ")";
+					DBFullType = "DbType.String";
+					ConvertF = "dr.GetString({0})";
+					break;
+				}
+			case DbType.Boolean:
+				{
+					ColType = "bool" +   (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "bit";
+					DBFullType = "DbType.Boolean";
+					ConvertF = "dr.GetBoolean({0})";
+					break;
+				}
+            case DbType.SByte:
+				{
+					ColType = "bool" +   (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "tinyint";
+					DBFullType = "DbType.SByte";
+					break;
+				}
+			case DbType.DateTime:
+				{
+					ColType = "DateTime" +   (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "DateTime";
+					DBFullType = "DbType.DateTime";
+					ConvertF = "dr.GetDateTime({0})";
+					break;
+				}
+			case DbType.Date:
+				{
+					ColType = "DateTime" +   (column.AllowDBNull ? "?" : string.Empty);
+					DBType = "Date";
+					DBFullType = "DbType.Date";
+					ConvertF = "dr.GetDateTime({0})";
+					break;
+				}
+            default:
+                {
+                    ColType = column.DataType.ToString();
+					DBType = column.DataType.ToString();
+					DBFullType = column.DataType.ToString();
+					ConvertF = "dr.GetString({0})";
+                    break;
+                }
+		}
+		if(rType == NeedType.ColType) return ColType;
+		else if(rType == NeedType.DBType) return DBType;
+		else if(rType == NeedType.DBFullType) return DBFullType;
+		else if(rType == NeedType.Convert) return string.Format(ConvertF, string.Format("\"{0}\"",column.Name));
+		else return ColType;
+	}
+    
+    public static string FormatDBNaming(string sourceName)
+    {
+        if(string.IsNullOrEmpty(sourceName)) return sourceName;
+        
+        return System.Text.RegularExpressions.Regex.Replace(sourceName, @"(^[a-z])|(_[a-z])",
+                                           m => m.Value.Length == 2 ? m.Value.Substring(1).ToUpper() : m.Value.ToUpper());
+    }
+    
+    public static string FormatCamelName(string srouceName)
+    {
+        var tpName = FormatDBNaming(srouceName);
+        return Char.ToLowerInvariant(tpName[0]) + tpName.Substring(1);
+    }
+</script>

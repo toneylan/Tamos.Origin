@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tamos.AbleOrigin.DocExchange</name>
+    </assembly>
+    <members>
+        <member name="T:Tamos.AbleOrigin.DocExchange.ExcelKit.BaseCell">
+            <summary>
+            表示基础单元格
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader">
+            <summary>
+            Excel内容读取
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.CurRowIndex">
+            <summary>
+            获取或设置当前在Sheet中的行索引
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.NextRow">
+            <summary>
+            跳到下一行，如果已到Excel内容的最后一行，则返回false
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.NextSheet">
+            <summary>
+            跳到下一个Sheet
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.GetCellValue(System.Int32,System.String)">
+            <summary>
+            获取单元格的字符串值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.GetCellIntValue(System.Int32,System.Int32)">
+            <summary>
+            获取单元格的字符串值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.GetCellNumericValue(System.Int32,System.Double)">
+            <summary>
+            获取单元格的数字值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentReader.GetCellDateTimeValue(System.Int32,System.DateTime)">
+            <summary>
+            获取单元格的时间
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter">
+            <summary>
+            内容输出器，可交给调用方即时写入内容。
+            减少将数据装换成中间对象或数据时的内存浪费，也可在大数据量时分批读取数据源进行写入。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.CurRowIndex">
+            <summary>
+            当前在Sheet中的写入行
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.CurColumnIndex">
+            <summary>
+            当前在Sheet中的写入列
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.NewRow">
+            <summary>
+            新创建一行
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            合并单元格：起始行号，终止行号， 起始列号，终止列号
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.SetRowHeight(System.Int32)">
+            <summary>
+            设置行高
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.WriteCell(System.String,Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle)">
+            <summary>
+            渐进式的写入Cell值(即调用后CurColumnIndex增加1)
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.WriteCell(System.Int32,Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle,System.Boolean)">
+            <summary>
+            写入int类型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.WriteCell(System.Double,Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle,System.Boolean)">
+            <summary>
+            写入数值类型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.IContentWriter.WriteCell(System.Decimal,Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle,System.Boolean)">
+            <summary>
+            写入数值类型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.NPOIContentWriter.MergedRegion(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            合并单元格：起始行号，终止行号， 起始列号，终止列号
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DocExchange.ExcelKit.ExcelAdapter">
+            <summary>
+            Excel 文档的适配器，提供与Excel文档间的读写等功能
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.ExcelAdapter.GetAdapter">
+            <summary>
+            目前默认适配格式为Excel 2007
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutSet.RowSpan">
+            <summary>
+            跨几行
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutSet.ColumnSpan">
+            <summary>
+            跨几列
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutSet.HorizontalStretch">
+            <summary>
+            水平占满SheetSection列宽度
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutSet.ColumnWidth">
+            <summary>
+            设置所在列的宽度(字符宽度)
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutSet.RowHeight">
+            <summary>
+            设置所在行的高度(一行中有一个设置即可)
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.StoreIndex">
+            <summary>
+            样式解析到Woorbook中存储索引
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.ApplyToColumn">
+            <summary>
+            是否把当前样式设置到列的默认样式
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.FontPoints">
+            <summary>
+            字号
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.FontBold">
+            <summary>
+            字体是否加粗
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.Alignment">
+            <summary>
+            水平对其方式
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.VerticalAlignment">
+            <summary>
+            垂直对其方式
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.BackgroundColor">
+            <summary>
+            背景颜色，设置后将默认带边框
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.LayoutStyle.HasBorder">
+            <summary>
+            是否设置边框
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetPage.SheetName">
+            <summary>
+            Excel里SheetName不允许“[]\/?”等特殊字符
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetPage.SheetStyles">
+            <summary>
+            存储Sheet中的样式列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetPage.CreateStyle(System.Boolean,Tamos.AbleOrigin.DocExchange.ExcelKit.AlignmentMode,System.Boolean,System.Int16)">
+            <summary>
+            创建一个样式。注意：样式尽可能的重用，以减少样式的定义数量。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetRow">
+            <summary>
+            Sheet的一行
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetSection">
+            <summary>
+            Excel sheet 的一个部分/段
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetSection.Headers">
+            <summary>
+            头部行列表
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetSection.BodyWriteAction">
+            <summary>
+            Body输出方法
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.DocExchange.ExcelKit.SheetSection.Footers">
+            <summary>
+            尾部行列表
+            </summary>
+        </member>
+    </members>
+</doc>

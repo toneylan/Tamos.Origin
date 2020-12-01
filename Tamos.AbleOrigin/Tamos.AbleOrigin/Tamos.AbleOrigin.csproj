@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Version>1.0.5.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <!--Bonny项目总目录可通过环境变量设置如：BonnyProjDir = E:\Bonny.Project\ -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if $(ConfigurationName)==Release (&#xD;&#xA;  call $(ProjectDir)..\..\Shared\LibInternal\CopyDll.bat $(TargetDir)$(TargetName)&#xD;&#xA;  call $(ProjectDir)..\..\Shared\LibInternal\CopyToBonny.bat $(TargetDir)$(TargetName)&#xD;&#xA;)" />
+  </Target>
+
+</Project>

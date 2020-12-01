@@ -1,0 +1,695 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tamos.AbleOrigin</name>
+    </assembly>
+    <members>
+        <member name="T:Tamos.AbleOrigin.Cache.CacheService">
+            <summary>
+            分布式缓存服务，当前采用Redis
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Cache.CacheService.LogMiss">
+            <summary>
+            是否开启miss时日志记录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.CacheService.Get``1(System.String)">
+            <summary>
+            获取缓存的数据
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.CacheService.Set``1(System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存数据
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.CacheService.Delete(System.String)">
+            <summary>
+            删除指定的缓存项
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.CacheService.Get``1(System.String,System.Func{``0},System.Nullable{System.TimeSpan})">
+            <summary>
+            从缓存中获取数据，若miss则回调数据并插入缓存。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.CacheUtil.NeedReload(System.String,System.Int32)">
+            <summary>
+            判断某项数据是否需要重载。返回true时会同时记录当前加载时间。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Cache.ICacheProvider">
+            <summary>
+            定义分布式缓存
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.ICacheProvider.Get``1(System.String)">
+            <summary>
+            获取数据
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.ICacheProvider.Set``1(System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置缓存数据
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Cache.ICacheProvider.Delete(System.String)">
+            <summary>
+            删除指定的缓存项
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.AsyncTask.RunInScope(System.Action)">
+            <summary>
+            在一个IOC Scope中执行异步任务，确保过程中创建的实例，最后能被释放。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.EnumHelper.GetEnumDes(System.Enum)">
+            <summary>
+            从枚举值的Description属性获取描述
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.EnumHelper.GetDes(System.Enum)">
+            <summary>
+            获取枚举值描述
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.EnumHelper.ParseList``1(System.String)">
+            <summary>
+            将逗号分隔的枚举值，解析为枚举列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.EnumHelper.ToJoinStr``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            转为逗号分隔的枚举值字符串
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.EnumHelper.GetShort``1(``0)">
+            <summary>
+            将枚举类型转为short。对确切的枚举类型值，直接类型转换，无需使用此方法。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.RemoveSeconds(System.DateTime)">
+            <summary>
+            截去秒、毫秒部分
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.FromUnixTimestamp(System.Int64)">
+            <summary>
+            从UNIX 时间戳转为DateTime
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.IsDefaultDateTime(System.DateTime)">
+            <summary>
+            是否是默认时间
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.HalfHourCeiling(System.DateTime)">
+            <summary>
+            对齐到半小时（向上舌入）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.HalfHourFloor(System.DateTime)">
+            <summary>
+            对齐到半小时（向下舌去）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.HourCeiling(System.DateTime)">
+            <summary>
+            对齐到小时（向上舌入）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.HourFloor(System.DateTime)">
+            <summary>
+            对齐到小时（向下舌去）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.ShortDes(System.DayOfWeek)">
+            <summary>
+            获取“周几”的描述
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.GetFriendlyDes(System.DateTime)">
+            <summary>
+            获取时间的简单描述
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.DateTimeExtend.ToFullString(System.DateTime)">
+            <summary>
+            格式：yyyy-MM-dd HH:mm:ss
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.ListExtend.IsNullOrEmpty``1(System.Collections.Generic.IReadOnlyCollection{``0})">
+            <summary>
+            列表是否为null或Count==0
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.ListExtend.Separate``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Collections.Generic.List{``0}@)">
+            <summary>
+            按条件筛选的同时，余下项放入out分组
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.ListExtend.NullableSelectMany``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``1}})">
+            <summary>
+            支持空引用的SelectMany方法
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.IsNull(System.String)">
+            <summary>
+            简写IsNullOrEmpty
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.NotNull(System.String)">
+            <summary>
+            简写Not IsNullOrEmpty
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.ToLong(System.String,System.Int64)">
+            <summary>
+            转为long类型，支持null
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.ToInt(System.String,System.Int32)">
+            <summary>
+            转为int类型，支持null
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.Append(System.String,System.String,System.String)">
+            <summary>
+            非空时才左右拼接字符
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.SepAppend(System.String,System.String,System.String)">
+            <summary>
+            追加字符，非空时才添加分隔符separator
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.StringExtend.RemoveNull(System.String)">
+            <summary>
+            简写RemoveNullOrEmpty
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.TypeExtend.GetValue``2(System.Collections.Generic.Dictionary{``0,``1},``0)">
+            <summary>
+            key不存在时返回默认值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.TypeExtend.SetValue``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
+            <summary>
+            添加/更新key对应的值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.TypeExtend.GetOrAdd``2(System.Collections.Generic.Dictionary{``0,``1},``0)">
+            <summary>
+            获取/添加key对应的值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.TypeExtend.GetPropertySetter``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            获取属性的设置方法
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.TypeExtend.GetPropertySetter``2(System.Reflection.PropertyInfo)">
+            <summary>
+            获取属性的设置方法
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.TypeExtend.GetPropertyGetter``2(System.Reflection.PropertyInfo)">
+            <summary>
+            获取属性的Get方法
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Common.Utility">
+            <summary>
+            提供经常使用的一些实用方法
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.IsEmail(System.String)">
+            <summary>
+            判断一个字符串是否为邮件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.IsMobileNumber(System.String)">
+            <summary>
+            判断一个字符串是否为手机号码
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.IsPhoneNumber(System.String)">
+            <summary>
+            判断是否为座机、手机等号码
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.IsNumeric(System.String)">
+            <summary>
+            检查一个字符串是否是纯数字构成的，一般用于查询字符串参数的有效性验证。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.IsUrl(System.String)">
+            <summary>
+            判断一个字符串是否为网址
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.IsDefaultDate(System.DateTime)">
+            <summary>
+            判断是否为默认时间
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.QuickValidate(System.String,System.String)">
+            <summary>
+            快速验证一个字符串是否符合指定的正则表达式。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToDate(System.String,System.DateTime)">
+            <summary>
+            把字符串转成日期
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToTimeSpan(System.String,System.TimeSpan)">
+            <summary>
+            把字符串转成时间间隔
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToDouble(System.String,System.Double)">
+            <summary>
+            把字符串转成数字类型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToShort(System.String,System.Int16)">
+            <summary>
+            把字符串转成整型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToInt(System.String,System.Int32)">
+            <summary>
+            把字符串转成整型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToLong(System.String,System.Int64)">
+            <summary>
+            把字符串转成整型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.StrToDecimal(System.String,System.Decimal)">
+            <summary>
+            把字符串转成Decimal
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.ParseIDListFromString(System.String)">
+            <summary>
+            从逗号分隔的ID里取出int列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.ParseLongIDListFromString(System.String)">
+            <summary>
+            从逗号分隔的ID里取出long列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.ParseIDListFromString(System.String,System.Char)">
+            <summary>
+            从指定分隔的字符串里取出正整数列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.ParseLongIDListFromString(System.String,System.Char)">
+            <summary>
+            从指定分隔的字符串里取出正整数列表
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.BlurString(System.String,System.Int32,System.Int32)">
+            <summary>
+            将字符串中间用*替代
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Common.Utility.BuildRandomStr(System.Int32)">
+            <summary>
+            生成指定长度的随机数
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.FileUtil.FriendlyDesSize(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            描述文件大小: *K / *M / *G ……
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.LazyTask">
+            <summary>
+            异步的延迟任务，保持单线程执行，可避免驻留Task来轮询或挂起。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.LazyTask.MaxDelayTime">
+            <summary>
+            最大延迟多少时间执行。触发Schedule后修改，下一轮Schedule才会生效。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.LazyTask.TaskAction">
+            <summary>
+            将触发执行的Action
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.LazyTask.InSchedule">
+            <summary>
+            是否处于计划中，但未开始此次执行计划（不代表当前没有任务执行，因为可能正在上一轮执行中）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.LazyTask.Schedule">
+            <summary>
+            发起执行计划，支持并发调用
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Configuration.CentralConfiguration">
+            <summary>
+            统一集中的配置管理，所有设置都会以环境（Environment），作为根目录划分。<br />
+            环境有两种设置方式，1、本地配置文件中设置"DeployEnvironment"；2、操作系统环境变量设置"TamosEnv"。<br />
+            环境设置值参考：Dev、Production。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.CentralConfiguration.SetProvider``1(Tamos.AbleOrigin.Configuration.IAppSettingProvider)">
+            <summary>
+            设置Provider并初始化环境设置，由Booster调用。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.Configuration.CentralConfiguration.DeployEnv">
+            <summary>
+            当前部署的环境，如：Dev、Test、Production（开发、测试、生产）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.CentralConfiguration.Set(System.String,System.String)">
+            <summary>
+            设置K/V值，key可用"/"划分目录，如：WebSites/Portal
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.CentralConfiguration.Get(System.String,System.String)">
+            <summary>
+            获取K/V值，key可包含"/"划分的目录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.CentralConfiguration.GetAppSetting(System.String,System.String)">
+            <summary>
+            获取程序本地（appsettings.json）的配置
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.CentralConfiguration.IsEnvDev">
+            <summary>
+            是否处于开发环境
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.ICentralConfigProvider.Set(System.String,System.String)">
+            <summary>
+            设置K/V值，key可用"/"划分目录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.ICentralConfigProvider.Get(System.String)">
+            <summary>
+            获取K/V值，key可包含"/"划分的目录
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.IAppSettingProvider.GetAppSetting(System.String)">
+            <summary>
+            获取程序本地配置
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Configuration.ServiceAddressConfig">
+            <summary>
+            服务地址配置读取
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.ServiceAddressConfig.GetDeployServiceName(System.String)">
+            <summary>
+            获取当前部署的服务名称，同一服务部署多个实例时，保持唯一，如：MimsDataBroker1，MimsDataBroker2
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.ServiceAddressConfig.GetAddress(System.String,System.String,System.Boolean)">
+            <summary>
+            通过服务名获取地址。（Consul目录：ServiceAddress）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.ServiceAddressConfig.GetAddressByDeployName(System.String)">
+            <summary>
+            通过部署的服务名，获取服务地址配置
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Configuration.ServiceAddressConfig.GetExternalSrvSet(System.String,System.String,System.Boolean)">
+            <summary>
+            获取外部服务设置，如MQ、缓存等。（Consul目录：ExternalService）。<br />
+            readAppSetting 是否优先读取本地配置。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.DistributedService">
+            <summary>
+            分布式系统的基础功能服务，依靠Redis实现
+            </summary>
+        </member>
+        <member name="F:Tamos.AbleOrigin.DistributedService.Provider">
+            <summary>
+            Redis实现Provider
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DistributedService.Lock(System.String,System.TimeSpan,System.TimeSpan,System.IDisposable@)">
+            <summary>
+            开启分布式锁。
+            </summary>
+            <param name="name">锁名称</param>
+            <param name="lockTimeout">锁在多久后，即使未释放也会自动超时释放</param>
+            <param name="waitTimeout">等待获取锁的超时时间</param>
+            <param name="resLock">获得的锁实例</param>
+            <returns>是否获取锁成功</returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.DistributedService.RunInLock(System.String,System.TimeSpan,System.TimeSpan,System.Action)">
+            <summary>
+            开启分布式锁，以执行过程。注意：方法返回时锁已经释放了。
+            </summary>
+            <param name="name">锁名称</param>
+            <param name="lockTimeout">锁在多久后，即使未释放也会自动超时释放</param>
+            <param name="waitTimeout">等待获取锁的超时时间</param>
+            <param name="action">获取锁成功后执行的过程</param>
+            <returns>是否成功获取锁来执行action</returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IDistributedSrvProvider.Lock(System.String,System.String,System.TimeSpan)">
+            <summary>
+            开启分布式锁
+            </summary>
+            <param name="name">锁名称</param>
+            <param name="value">锁的值，用于区分调用方</param>
+            <param name="lockTimeout">锁在多久后，即使未释放也会自动超时释放</param>
+            <returns>是否获取锁成功</returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IDistributedSrvProvider.Unlock(System.String,System.String)">
+            <summary>
+            释放分布式锁
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IDistributedSrvProvider.HashIncr(System.String,System.String,System.Decimal)">
+            <summary>
+            为哈希表 key 中字段 field 的值加上增量 value。如果key/field不存在，会自动创建。
+            </summary>
+            <returns>结果值</returns>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IDistributedSrvProvider.HashGetAll``1(System.String)">
+            <summary>
+             获取在哈希表中指定 key 的所有字段和值
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IDistributedSrvProvider.HashDel(System.String,System.String[])">
+            <summary>
+            删除一个或多个哈希表字段
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IOC.IServiceContainer.Register``1(System.Collections.Generic.IEnumerable{System.Type},System.Nullable{Tamos.AbleOrigin.IOC.LifeStyleType})">
+            <summary>
+            注册实现多个接口的TImpl
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IOC.IServiceContainer.GetInstance``1">
+            <summary>
+            Get an instance of the given <typeparamref name="TService"/>.
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IOC.IServiceContainer.BeginScope">
+            <summary>
+            开启新的Scope，Dispose时其中的Service会一同释放。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IOC.IServiceContainer.EndScope">
+            <summary>
+            结束当前所处的Scope。一般用在需要与BeginScope分开调用的场景。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.IOC.ServiceLocator.GetOrReflect``1(System.String)">
+            <summary>
+            IOC中无法获取对象时，尝试反射获取。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Log.LogService">
+            <summary>
+            集中日志配置：ExternalService/CentralLog_ApiKey、CentralLog_ServerUrl
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Log.LogService.SetProvider(Tamos.AbleOrigin.Log.ILogging)">
+            <summary>
+            设置ILogging实现，由Booster调用。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Log.LogService.SafeWrite(System.String)">
+            <summary>
+            防止Logger初始化失败时，无法写入日志。也避免初始化与写日志的死循环。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Log.NullLogger">
+            <summary>
+            没有日志实现类时的，空实现
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Mapper.EntMapper">
+            <summary>
+            对象间Map，如：Entity - DTO。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.EntMapper.SetProvider(Tamos.AbleOrigin.Mapper.IObjectMapper)">
+            <summary>
+            设置IObjectMapper实现，由Booster调用。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.EntMapper.Reg``2(System.Boolean)">
+            <summary>
+            注册新的Map
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.EntMapper.RegSetter``2(System.Boolean)">
+            <summary>
+            注册Map并返回设置对象
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.EntMapper.Map``1(System.Object)">
+            <summary>
+            Map为目标类型
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.EntMapper.Map``2(``0,``1)">
+            <summary>
+            将对象Map到已有实例
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.EntMapper.Compile">
+            <summary>
+            编译已注册的Map，同时能检查正确性
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.IObjectMapper.Reg``2(System.Boolean)">
+            <summary>
+            注册新的Map。Flexible Name Mapping：如UserName对应userName或user_name。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.IObjectMapper.RegSetter``2(System.Boolean)">
+            <summary>
+            注册Map并返回设置对象
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.IObjectMapper.Map``2(``0,``1)">
+            <summary>
+            将对象Map到已有实例
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Mapper.IObjectMapper.Compile">
+            <summary>
+            编译已注册的Map，同时能检查正确性
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Reflect.CodeGenRegBaseImplAttribute">
+            <summary>
+            标记需要将父接口注册到IOC Proxy中
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.HostApp.RootPath">
+            <summary>
+            获取当前应用程序目录的绝对路径。
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.HostApp.Options">
+            <summary>
+            App设置（不会返回null）
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.HostApp.GetPath(System.String)">
+            <summary>
+            将相对应用根目录的路径，转换为绝对路径。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.HostAppOptions">
+            <summary>
+            App设置选项
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.HostAppOptions.AppName">
+            <summary>
+            当前应用的名称
+            </summary>
+        </member>
+        <member name="P:Tamos.AbleOrigin.HostAppOptions.IsStandalone">
+            <summary>
+            是否独立系统
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Security.Encryptor.MD5Encrypt(System.String)">
+            <summary>
+            对字符串进行MD5加密
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Security.Encryptor.SHA1Encrypt(System.String)">
+            <summary>
+            对字符串进行Sha1加密
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Serialize.IJsonSerializer">
+            <summary>
+            Json序列化功能接口
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Serialize.IJsonSerializer.Serialize(System.Object)">
+            <summary>
+            序列化对象为字符串
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Serialize.IJsonSerializer.Deserialize``1(System.String)">
+            <summary>
+            从字符串反序列化到对象
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Serialize.JsonNativeSerializer">
+            <summary>
+            ！暂未实现
+            .Net 原生的Json序列化，缺省时使用。
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.Serialize.SerializeUtil">
+            <summary>
+            序列化工具
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Serialize.SerializeUtil.ToJson(System.Object)">
+            <summary>
+            序列化对象为Json字符串
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.Serialize.SerializeUtil.FromJson``1(System.String)">
+            <summary>
+            从Json字符串反序列化到对象
+            </summary>
+        </member>
+        <member name="T:Tamos.AbleOrigin.ServiceBase.BaseServiceComponent">
+            <summary>
+            服务组件基类
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.ServiceBase.BaseServiceComponent.GetComponent``1">
+            <summary>
+            获取或创建组件实例（实现重用），会跟随当前对象一起释放。
+            </summary>
+        </member>
+        <member name="M:Tamos.AbleOrigin.ServiceBase.BaseServiceComponent.GetComponent``1(System.Func{``0},System.String)">
+            <summary>
+            获取组件实例，没有时创建并缓存。
+            </summary>
+        </member>
+    </members>
+</doc>
