@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.DataProto.Payment
+﻿namespace Tamos.AbleOrigin.DataProto
 {
     /// <summary>
     /// 支付处理的结果类型
@@ -18,7 +18,7 @@
         /// <summary>
         /// 支付成功（如付款码直接支付）
         /// </summary>
-        PaymentSuccess = 50
+        PaymentSuccess = 10
     }
 
     /// <summary>

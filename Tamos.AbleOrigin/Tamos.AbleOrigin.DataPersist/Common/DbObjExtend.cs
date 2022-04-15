@@ -1,76 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
-using Tamos.AbleOrigin.Common;
 using Tamos.AbleOrigin.DataProto;
-using Tamos.AbleOrigin.Mapper;
 
 namespace Tamos.AbleOrigin.DataPersist
 {
     public static class DbObjExtend
     {
-        #region FastAccessor
-        
-        /// <summary>
-        /// 按父级Id查询
-        /// </summary>
-        public static List<TDTO> GetByParent<TDTO, TEntity>(this FastAccessor<TDTO, TEntity> accessor, long parentId)
-            where TDTO : IGeneralEntity where TEntity : class, IGeneralSubEntity
-        {
-            return accessor.QueryList(x => x.ParentId == parentId);
-        }
-
-        /// <summary>
-        /// 将子级数据一并查出
-        /// </summary>
-        public static TDTO GetWithSub<TDTO, TEntity, TSubDTO, TSubEntity>(this FastAccessor<TDTO, TEntity> accessor, long id, FastAccessor<TSubDTO, TSubEntity> subAcs)
-            where TDTO : class, IGeneralEntity
-            where TEntity : class, IGeneralParentEntity<TSubEntity>
-            where TSubDTO : IGeneralEntity
-            where TSubEntity : class, IGeneralSubEntity
-        {
-            var qry = from pt in accessor.Queryable()
-                join sub in subAcs.Queryable() on pt.Id equals sub.ParentId into subs
-                from item in subs.DefaultIfEmpty()
-                where pt.Id == id
-                select new JoinObj<TEntity, TSubEntity> {Data = pt, Item = item};
-
-            return qry.ToList().CvtObj().MapTo<TDTO>();
-        }
-
-        /// <summary>
-        /// 依据列表数据的关联Id，查询关联的记录并填充到相应的属性值。
-        /// </summary>
-        public static void FillProperty<TSource, TDTO>(this IReadOnlyCollection<TSource> list, Expression<Func<TSource, TDTO>> expressionProp, 
-            Func<TSource, long> funcPropId, IFastAccessor<TDTO> accessor)
-            where TDTO : IGeneralEntity
-        {
-            list.FillProperty(expressionProp, funcPropId, accessor.Get);
-
-            /*if (list.IsNullOrEmpty()) return;
-            
-            var objList = accessor.Get(list.Select(funcPropId).ToList());
-            if (objList.IsNullOrEmpty()) return;
-
-            var setter = TypeExtend.GetPropertySetter(expressionProp);
-            foreach (var item in list)
-            {
-                var obj = objList.ById(funcPropId(item));
-                if (obj != null) setter(item, obj);
-            }*/
-        }
-
-        #endregion
-
         #region JoinObj convert
 
-        /// <summary>
+        /*/// <summary>
         /// 注意！确保列表的TOuter是单个记录（Join造成的重复）。返回单个TOuter并设置TInner到SubItems。
         /// </summary>
         public static TOuter CvtObj<TOuter, TInner>(this IReadOnlyList<JoinObj<TOuter, TInner>> resList) where TOuter : class, IGeneralParentEntity<TInner>
         {
-            if (resList.IsNullOrEmpty()) return null;
+            if (resList.IsNull()) return null;
 
             var res = resList[0].Data;
             res.SubItems = new List<TInner>();
@@ -79,22 +24,22 @@ namespace Tamos.AbleOrigin.DataPersist
                 if (obj.Item != null) res.SubItems.Add(obj.Item);
             }
             return res;
-        }
+        }*/
 
         /// <summary>
-        /// 对Id一对多Join查询结果，转换为GroupBy Id的列表，同时把Inner列表设置到Outer子项上。
+        /// 对一对多Join查询结果，转换为GroupBy TOuter.Id的列表，同时把Inner列表设置到Outer子项上。
         /// </summary>
-        public static List<TOuter> CvtList<TOuter, TInner>(this IReadOnlyList<JoinObj<TOuter, TInner>> resList, Action<TOuter, List<TInner>> setItems) where TOuter : class, IGeneralEntity
+        [return: NotNullIfNotNull("resList")]
+        public static List<TOuter>? CvtList<TOuter, TInner>(this IReadOnlyList<JoinObj<TOuter, TInner>>? resList, Action<TOuter, List<TInner>> setItems) 
+            where TOuter : class, IGeneralEntity
         {
-            if (resList.IsNullOrEmpty()) return null;
-            
-            return resList.GroupBy(x => x.Data.Id, (id, objList) =>
+            return resList?.GroupBy(x => x.Data.Id, (_, objList) =>
             {
                 TOuter data = null;
                 var items = new List<TInner>();
                 foreach (var obj in objList)
                 {
-                    if (data == null) data = obj.Data;
+                    data ??= obj.Data;
                     items.Add(obj.Item);
                 }
                 setItems(data, items);
@@ -115,6 +60,45 @@ namespace Tamos.AbleOrigin.DataPersist
         }
 
         #endregion*/
+
+        #region Normal query
+        
+        /// <summary>
+        /// Set total count if need, return paging res list.
+        /// </summary>
+        public static List<T> PagingRes<T>(this IQueryable<T> query, IPagingPara para)
+        {
+            // First query result
+            var res = para.PageIndex <= 1
+                ? query.Take(para.PageSize).ToList()
+                : query.Skip((para.PageIndex - 1) * para.PageSize).Take(para.PageSize).ToList();
+
+            if (!para.QueryTotal) return res;
+            
+            // 首页不足即知道了总数，免去Total查询
+            if (para.PageIndex <= 1 && res.Count < para.PageSize) para.Total = res.Count;
+
+            // Query total
+            para.Total = query.Count();
+
+            return res;
+        }
+
+        /// <summary>
+        /// 查询出GeneralPageRes
+        /// </summary>
+        public static GeneralPageRes<TRes> PagingRes<TPO, TRes>(this IQueryable<TPO> query, IPagingPara para, Converter<TPO, TRes>? converter = null)
+        {
+            var list = query.PagingRes(para);
+
+            return new GeneralPageRes<TRes>
+            {
+                Data = converter == null ? EntMapper.Map<List<TRes>>(list) : list.ConvertAll(converter),
+                Total = para.Total
+            };
+        }
+
+        #endregion
             
         #region Sharding Query
 
@@ -201,7 +185,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 按分页参数查询
         /// </summary>
-        public static IEnumerable<TResult> PagingQuery<TDb, TResult>(this IReadOnlyList<TDb> dbs, Func<TDb, IQueryable<TResult>> query, IPagingQueryPara para) 
+        public static IEnumerable<TResult> PagingQuery<TDb, TResult>(this IReadOnlyList<TDb> dbs, Func<TDb, IQueryable<TResult>> query, IPagingPara para) 
             where TDb : ShardingDbContext
         {
             if (!para.QueryTotal)
@@ -210,25 +194,10 @@ namespace Tamos.AbleOrigin.DataPersist
             }
 
             var pageQry = DoPagingQuery(dbs, query, (para.PageIndex - 1) * para.PageSize, para.PageSize, para.QueryTotal, out var count);
-            para.Count = count;
+            para.Total = count;
             return pageQry;
         }
-
-        /// <summary>
-        /// 按分页参数查询结果
-        /// </summary>
-        public static List<TResult> ToPagingList<TResult>(this IQueryable<TResult> source, IPagingQueryPara para)
-        {
-            if (!para.QueryTotal)
-            {
-                return source.Skip((para.PageIndex - 1) * para.PageSize).Take(para.PageSize).ToList();
-            }
-
-            para.Count = source.Count();
-            var pageQry = source.Skip((para.PageIndex - 1) * para.PageSize).Take(para.PageSize).ToList();
-            return pageQry;
-        }
-
+        
         /// <summary>
         /// DateTime.Today 在当前ScopeType下的ContextScope。
         /// </summary>

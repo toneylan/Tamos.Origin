@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>6.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ConfigHost\Program.Part.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore" />
+    <PackageReference Include="protobuf-net.Grpc.AspNetCore" PrivateAssets="all" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Tamos.AbleOrigin.Booster\Tamos.AbleOrigin.Booster.csproj" />
+    <ProjectReference Include="..\Tamos.AbleOrigin.DataProto\Tamos.AbleOrigin.DataProto.csproj" />
+    <ProjectReference Include="..\Tamos.AbleOrigin\Tamos.AbleOrigin.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.Mapper
+﻿namespace Tamos.AbleOrigin
 {
     public interface IObjectMapper
     {
@@ -10,7 +10,7 @@
         /// <summary>
         /// 注册Map并返回设置对象
         /// </summary>
-        BaseMapSetter<TSource, TDestination> RegSetter<TSource, TDestination>(bool flexName = false);
+        IMapSetter<TSource, TDestination> RegSetter<TSource, TDestination>(bool flexName = false);
 
         TDestination Map<TDestination>(object source);
 

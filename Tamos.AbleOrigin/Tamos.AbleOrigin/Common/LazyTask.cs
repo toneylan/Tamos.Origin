@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Tamos.AbleOrigin.Log;
 
 namespace Tamos.AbleOrigin
 {
@@ -71,7 +70,7 @@ namespace Tamos.AbleOrigin
             Task.Run(TaskScheduler);
         }
 
-        private void TaskScheduler()
+        private async Task TaskScheduler()
         {
             try
             {
@@ -82,7 +81,7 @@ namespace Tamos.AbleOrigin
                     if (waitSpan > 0) Thread.Sleep(waitSpan);
                 }*/
 
-                Thread.Sleep(MaxDelayTime);
+                await Task.Delay(MaxDelayTime);
 
                 //====执行计划任务
                 _expectTimes = 0; //Interlocked.Exchange(ref _expectTimes, 0);

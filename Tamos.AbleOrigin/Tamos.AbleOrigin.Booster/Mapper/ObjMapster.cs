@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using Tamos.AbleOrigin.Mapper;
 
 namespace Tamos.AbleOrigin.Booster
 {
@@ -22,7 +21,7 @@ namespace Tamos.AbleOrigin.Booster
         /// <summary>
         /// 注册Map并返回设置对象
         /// </summary>
-        public BaseMapSetter<TSource, TDestination> RegSetter<TSource, TDestination>(bool flexName = false)
+        public IMapSetter<TSource, TDestination> RegSetter<TSource, TDestination>(bool flexName = false)
         {
             var conf = TypeAdapterConfig<TSource, TDestination>.NewConfig();
             return new ObjMapSetter<TSource, TDestination>(flexName ? conf.NameMatchingStrategy(NameMatchingStrategy.Flexible) : conf);

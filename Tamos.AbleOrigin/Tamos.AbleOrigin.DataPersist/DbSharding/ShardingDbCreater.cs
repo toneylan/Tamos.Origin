@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using Tamos.AbleOrigin.DataProto;
-using Tamos.AbleOrigin.ServiceBase;
 
 namespace Tamos.AbleOrigin.DataPersist
 {
     /// <summary>
     /// ShardingDb的创建辅助类，创建的Db会缓存起来，跟随Creater一起释放。
     /// </summary>
-    public class ShardingDbCreater<T> : BaseServiceComponent, IShardingDbCreater<T> where T : ShardingDbContext
+    public class ShardingDbCreater<T> : ServiceComponent, IShardingDbCreater<T> where T : ShardingDbContext, new()
     {
-        //private readonly BaseServiceComponent _srvComponent; //利用来缓存Db
-        private readonly ShardingDbTypeDefine<T> _dbConfig;
+        #region Static ctor
 
-        public ShardingDbCreater()
+        //按默认的ShardScope Year注册当前Db类型的配置，其他ShardScope可考虑通过Attribute来配置。
+        //这里Static ctor利用了泛型的各具体类型，都会分别执行一次。
+        static ShardingDbCreater()
         {
-            //_srvComponent = service;
-            _dbConfig = ShardingDbContext.GetDbConfig(typeof(T)) as ShardingDbTypeDefine<T>;
-            if (_dbConfig == null) throw new Exception($"未获取到{typeof(T).FullName}配置，请检查是否调用RegDb<T>进行注册！");
+            DataPersistConfig.RegDb<T>(ShardScopeType.Year);
         }
 
+        #endregion
+
+        private readonly ShardingDbConfig _dbConfig = DataPersistConfig.GetDbConfig(typeof(T));
+        
         #region Create Db
 
         /// <summary>
@@ -29,13 +31,14 @@ namespace Tamos.AbleOrigin.DataPersist
         {
             if (scope.ScopeType != _dbConfig.ScopeType) throw new Exception($"{typeof(T).Name} ShardScope is {_dbConfig.ScopeType}, Can't use {scope.ScopeType}!");
 
-            if (_dbConfig.DbConstructor.NewDb != null)
+            return new T {Scope = scope};
+            /*if (_dbConfig.DbConstructor.NewDb != null)
             {
                 return _dbConfig.DbConstructor.NewDb(scope);
             }
 
             //反射创建
-            return Activator.CreateInstance(typeof(T), scope) as T;
+            return Activator.CreateInstance(typeof(T), scope) as T;*/
         }
 
         /// <summary>
@@ -43,8 +46,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// </summary>
         private T GetDb(ContextScope scope)
         {
-            var type = typeof(T);
-            var typeKey = type.Namespace + type.Name + scope.TablePostfix;
+            var typeKey = typeof(T).GetFullName() + scope.TableSuffix;
 
             return GetComponent(() => Create(scope), typeKey);
         }
@@ -100,15 +102,23 @@ namespace Tamos.AbleOrigin.DataPersist
         #region Db事务
 
         /// <summary>
+        /// 创建事务中的ShardingDb，需要自主管理生存周期，即用后释放。
+        /// </summary>
+        public T InTran(ContextScope scope, DbTransactionSet tran)
+        {
+            var db = new T {Scope = scope, TransactionSet = tran};
+            db.UseTransaction(); //设置Scope后才可调用
+            return db;
+        }
+
+        /*/// <summary>
         /// 创建事务中的Db，执行后Db会被释放（用了using）
         /// </summary>
-        public TRes InTran<TRes>(long id, DbTransactionContext tran, Func<T, TRes> operateFunc)
+        public TRes InTran<TRes>(long id, DbTransactionSet tran, Func<T, TRes> operateFunc)
         {
-            if (_dbConfig.DbConstructor.NewDbInTran == null) throw new Exception($"{typeof(T).Name}没有定义带事务参数的构造函数，请在RegDb方法中添加设置。");
-
-            using var db = _dbConfig.DbConstructor.NewDbInTran(Scope(DataIdBuilder.ParseDate(id)), tran);
+            using var db = InTran(Scope(DataIdBuilder.ParseDate(id)), tran);
             return operateFunc(db);
-        }
+        }*/
 
         #endregion
 
@@ -117,7 +127,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 按时间创建Scope
         /// </summary>
-        public ContextScope Scope(DateTime date)
+        internal ContextScope Scope(DateTime date)
         {
             return ContextScope.Create(_dbConfig.ScopeType, date);
         }
@@ -125,10 +135,9 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 按时间范围创建Scope，范围错误时，可能为空。
         /// </summary>
-        public List<ContextScope> Scope(DateTime start, DateTime end, bool avoidFutureTime = true)
+        internal List<ContextScope> Scope(DateTime start, DateTime end, bool avoidFutureTime = true)
         {
             return ContextScope.Create(_dbConfig.ScopeType, start, end, avoidFutureTime);
-            //if (scopes.IsNullOrEmpty()) scopes = scopes.NullableAdd(Scope(start));
         }
 
         #endregion

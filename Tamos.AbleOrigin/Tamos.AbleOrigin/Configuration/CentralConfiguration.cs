@@ -1,9 +1,7 @@
 ﻿using System;
-using Tamos.AbleOrigin.Common;
-using Tamos.AbleOrigin.IOC;
-using Tamos.AbleOrigin.Log;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Tamos.AbleOrigin.Configuration
+namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// 统一集中的配置管理，所有设置都会以环境（Environment），作为根目录划分。<br />
@@ -13,19 +11,20 @@ namespace Tamos.AbleOrigin.Configuration
     public static class CentralConfiguration
     {
         private const string Env_Dev = "Dev";
-        private const string Env_Test = "Test";
+        //private const string Env_Test = "Test";
         private const string Env_Production = "Production";
 
         #region ConfigProvider
-
+        
         private static ICentralConfigProvider _configProvider;
-
+        // ReSharper disable once ConstantNullCoalescingCondition
         private static ICentralConfigProvider ConfigProvider => _configProvider ??=
             (ServiceLocator.GetOrReflect<ICentralConfigProvider>("ConsulConfigProvider") ?? new NullConfigProvider());
 
         //-- 本地配置文件设置
         private static IAppSettingProvider _appSetProvider;
 
+        // ReSharper disable once ConstantNullCoalescingCondition
         private static IAppSettingProvider AppSetProvider => _appSetProvider ??= ServiceLocator.GetOrReflect<IAppSettingProvider>("AppSettingProvider");
 
         /// <summary>
@@ -45,12 +44,12 @@ namespace Tamos.AbleOrigin.Configuration
         {
             try
             {
-                DeployEnv = GetAppSetting("DeployEnvironment");
+                DeployEnv = GetAppSetting("DeployEnvironment")!;
                 if (!string.IsNullOrEmpty(DeployEnv)) return;
 
-                //检查系统环境变量设置，否则默认使用开发环境。
-                var computerSet = Environment.GetEnvironmentVariable($"{Utility.ProdBrand}Env", EnvironmentVariableTarget.Machine);
-                DeployEnv = !string.IsNullOrEmpty(computerSet) ? computerSet : Env_Dev;
+                //检查系统环境变量设置，否则默认使用生产环境。
+                var computerSet = Environment.GetEnvironmentVariable("TAMOS_ENV") ?? Environment.GetEnvironmentVariable("TAMOS_ENV", EnvironmentVariableTarget.User);
+                DeployEnv = !string.IsNullOrEmpty(computerSet) ? computerSet : Env_Production;
             }
             catch (Exception e)
             {
@@ -88,7 +87,8 @@ namespace Tamos.AbleOrigin.Configuration
         /// <summary>
         /// 获取K/V值，key可包含"/"划分的目录
         /// </summary>
-        public static string Get(string key, string defaultVal = null)
+        [return: NotNullIfNotNull("defaultVal")]
+        public static string? Get(string key, string? defaultVal = null)
         {
             if (string.IsNullOrEmpty(key)) return defaultVal;
 
@@ -110,7 +110,7 @@ namespace Tamos.AbleOrigin.Configuration
         /// <summary>
         /// 获取程序本地（appsettings.json）的配置
         /// </summary>
-        public static string GetAppSetting(string key, string defaultVal = null)
+        public static string? GetAppSetting(string key, string? defaultVal = null)
         {
             if (string.IsNullOrEmpty(key)) return defaultVal;
 

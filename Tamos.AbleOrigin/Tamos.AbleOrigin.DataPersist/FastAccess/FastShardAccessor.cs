@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Tamos.AbleOrigin.Common;
 using Tamos.AbleOrigin.DataProto;
 
 namespace Tamos.AbleOrigin.DataPersist
@@ -38,7 +37,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 依据Id获取单个记录
         /// </summary>
-        public TDTO Get(long id)
+        public TDTO? Get(long id)
         {
             return Queryable(DbCreater.By(id)).FirstOrDefault(x => x.Id == id).MapTo<TDTO>();
         }
@@ -46,7 +45,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 按条件获取首条记录
         /// </summary>
-        public TDTO Get(DateTime time, Expression<Func<TEntity, bool>> predicate)
+        public TDTO? Get(DateTime time, Expression<Func<TEntity, bool>> predicate)
         {
             return Queryable(DbCreater.By(time)).FirstOrDefault(predicate).MapTo<TDTO>();
         }
@@ -54,9 +53,9 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 依据Id列表获取
         /// </summary>
-        public List<TDTO> Get(IReadOnlyCollection<long> ids)
+        public List<TDTO>? Get(IReadOnlyCollection<long> ids)
         {
-            if (ids.IsNullOrEmpty()) return null;
+            if (ids.IsNull()) return null;
 
             return DbCreater.By(ids).Query(db => Queryable(db).Where(x => ids.Contains(x.Id)))
                 .ToList().MapTo<List<TDTO>>();
@@ -65,7 +64,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 按条件查询列表，时间仅用于定位分表
         /// </summary>
-        public List<TDTO> QueryList(DateTime start, DateTime end, Expression<Func<TEntity, bool>> predicate)
+        public List<TDTO>? QueryList(DateTime start, DateTime end, Expression<Func<TEntity, bool>> predicate)
         {
             return DbCreater.By(start, end).Query(db => Queryable(db).Where(predicate))
                 .ToList().MapTo<List<TDTO>>();
@@ -74,7 +73,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 按条件查询列表，时间仅用于定位分表
         /// </summary>
-        public List<TDTO> QueryList(DateTime start, DateTime end, Func<IQueryable<TEntity>, IQueryable<TEntity>> buildQuery)
+        public List<TDTO>? QueryList(DateTime start, DateTime end, Func<IQueryable<TEntity>, IQueryable<TEntity>> buildQuery)
         {
             return DbCreater.By(start, end).Query(db => buildQuery(Queryable(db)))
                 .ToList().MapTo<List<TDTO>>();

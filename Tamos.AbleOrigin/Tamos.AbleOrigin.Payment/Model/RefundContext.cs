@@ -6,13 +6,23 @@
     public class RefundContext
     {
         /// <summary>
-        /// 待退款的支付流水号
+        /// 当前退款请求流水号，用于唯一标识某次退款。
         /// </summary>
-        public string TargetTranId { get; set; }
+        public long TransId { get; set; }
+
+        /// <summary>
+        /// 要退款的支付流水号
+        /// </summary>
+        public long TargetTransId { get; set; }
 
         /// <summary>
         /// 退款金额 元
         /// </summary>
-        public decimal RefundAmount { get; set; }
+        public decimal RefundFee { get; set; }
+
+        /// <summary>
+        /// 操作人员
+        /// </summary>
+        public string? Operator { get; set; }
     }
 }

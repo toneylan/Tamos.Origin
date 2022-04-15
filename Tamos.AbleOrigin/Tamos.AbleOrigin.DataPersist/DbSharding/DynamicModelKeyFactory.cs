@@ -7,10 +7,10 @@ namespace Tamos.AbleOrigin.DataPersist
     {
         public object Create(DbContext context)
         {
-            var dbType = context.GetType();
+            var typeName = context.GetType().GetFullName();
             return context is ShardingDbContext shardDb
-                ? dbType.FullName + shardDb.Scope.TablePostfix
-                : dbType.FullName;
+                ? typeName + shardDb.Scope.TableSuffix
+                : typeName;
         }
     }
 }

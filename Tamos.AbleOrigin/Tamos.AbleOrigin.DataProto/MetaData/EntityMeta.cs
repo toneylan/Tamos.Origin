@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tamos.AbleOrigin.Common;
 
 namespace Tamos.AbleOrigin.DataProto
 {
@@ -26,13 +25,14 @@ namespace Tamos.AbleOrigin.DataProto
         /// <summary>
         /// 获取实体类的元设置
         /// </summary>
-        public static EntityMeta<T> Get<T>()
+        /// <param name="allProp">是否包含PropMeta之外的所有属性</param>
+        public static EntityMeta<T> Get<T>(bool allProp = false)
         {
-            var key = typeof(T).FullName ?? typeof(T).Name;
-            if (EntityMetas.TryGetValue(key, out var meta)) return meta as EntityMeta<T>;
+            var key = typeof(T).GetFullName();
+            if (EntityMetas.TryGetValue(key, out var meta)) return (EntityMeta<T>) meta;
 
             //缺少时新增
-            var crMeta = new EntityMeta<T>();
+            var crMeta = new EntityMeta<T>(allProp);
             EntityMetas.SetValue(key, crMeta);
             return crMeta;
         }
@@ -71,14 +71,14 @@ namespace Tamos.AbleOrigin.DataProto
         /// </summary>
         internal static PropertyValidator<TProp> GetValidator<TEnt, TProp>(PropertyMeta<TEnt, TProp> meta)
         {
-            return meta switch
+            return (meta switch
             {
                 PropertyMeta<TEnt, int> _ => IntValidator as PropertyValidator<TProp>,
                 PropertyMeta<TEnt, long> _ => LongValidator as PropertyValidator<TProp>,
                 PropertyMeta<TEnt, string> _ => StrValidator as PropertyValidator<TProp>,
                 PropertyMeta<TEnt, DateTime> _ => TimeValidator as PropertyValidator<TProp>,
                 _ => new PropertyValidator<TProp>()
-            };
+            })!;
         }
 
         #endregion

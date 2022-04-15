@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.Configuration
+﻿namespace Tamos.AbleOrigin
 {
     public interface ICentralConfigProvider
     {
@@ -10,7 +10,7 @@
         /// <summary>
         /// 获取K/V值，key可包含"/"划分的目录
         /// </summary>
-        string Get(string key);
+        string? Get(string key);
 
     }
 
@@ -19,6 +19,6 @@
         /// <summary>
         /// 获取程序本地配置
         /// </summary>
-        string GetAppSetting(string key);
+        string? GetAppSetting(string key);
     }
 }

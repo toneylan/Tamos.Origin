@@ -4,16 +4,16 @@ using Tamos.AbleOrigin.DataProto;
 
 namespace Tamos.AbleOrigin.DataPersist
 {
-    public class BondObj<T, TSub> where T : class, IGeneralParentEntity<TSub> //where TSub : IGeneralSubEntity
+    /*public class BondObj<T, TSub> where T : class, IGeneralParentEntity<TSub> //where TSub : IGeneralSubEntity
     {
         public T Data { get; set; }
         public IEnumerable<TSub> SubItems { get; set; }
 
-        /*public BondObj(T data, IEnumerable<TSub> subs)
+        *//*public BondObj(T data, IEnumerable<TSub> subs)
         {
             Data = data;
             SubItems = subs;
-        }*/
+        }*//*
 
         /// <summary>
         /// 设置子列表并返回Data
@@ -23,10 +23,10 @@ namespace Tamos.AbleOrigin.DataPersist
             Data.SubItems = SubItems?.ToList();
             return Data;
         }
-    }
+    }*/
 
     /// <summary>
-    /// EF Core 3目前不支持GroupJoin，此对象保存Join查询结果，然后再执行Group。
+    /// EF Core目前不支持GroupJoin，此对象保存Join查询结果，然后再执行Group。
     /// </summary>
     public class JoinObj<TOuter, TInner> //where TOuter : class
     {

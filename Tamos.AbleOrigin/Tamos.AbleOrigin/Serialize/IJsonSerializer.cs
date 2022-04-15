@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.Serialize
+﻿namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// Json序列化功能接口

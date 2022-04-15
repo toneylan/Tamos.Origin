@@ -1,11 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Version>1.0.0</Version>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>6.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,12 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Tamos.AbleOrigin">
-      <HintPath>..\..\Shared\LibInternal\Tamos.AbleOrigin.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Tamos.AbleOrigin\Tamos.AbleOrigin.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if $(ConfigurationName)==Release (&#xD;&#xA;  ::call $(ProjectDir)..\..\Shared\LibInternal\CopyDll.bat $(TargetDir)$(TargetName)&#xD;&#xA;  call $(ProjectDir)..\..\Shared\LibInternal\CopyToBonny.bat $(TargetDir)$(TargetName)&#xD;&#xA;)" />
-  </Target>
 </Project>

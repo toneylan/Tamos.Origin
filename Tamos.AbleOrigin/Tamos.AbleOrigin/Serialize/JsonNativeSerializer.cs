@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.Serialize
+﻿namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// ！暂未实现

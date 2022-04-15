@@ -1,13 +1,14 @@
-﻿using Tamos.AbleOrigin.IOC;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Tamos.AbleOrigin.Mapper
+namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// 对象间Map，如：Entity - DTO。
     /// </summary>
     public static class EntMapper
     {
-        private static IObjectMapper _objMapper;
+        private static IObjectMapper? _objMapper;
+        // ReSharper disable once AssignNullToNotNullAttribute
         private static IObjectMapper ObjMapper => _objMapper ??= ServiceLocator.GetOrReflect<IObjectMapper>("ObjMapster");
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Tamos.AbleOrigin.Mapper
         /// <summary>
         /// 注册Map并返回设置对象
         /// </summary>
-        public static BaseMapSetter<TSource, TDestination> RegSetter<TSource, TDestination>(bool flexName = false)
+        public static IMapSetter<TSource, TDestination> RegSetter<TSource, TDestination>(bool flexName = false)
         {
             return ObjMapper.RegSetter<TSource, TDestination>(flexName);
         }
@@ -43,7 +44,8 @@ namespace Tamos.AbleOrigin.Mapper
         /// <summary>
         /// Map为目标类型
         /// </summary>
-        public static TDestination Map<TDestination>(object source)
+        [return: NotNullIfNotNull("source")]
+        public static TDestination? Map<TDestination>(object? source)
         {
             return source == null ? default : ObjMapper.Map<TDestination>(source);
         }
@@ -51,7 +53,7 @@ namespace Tamos.AbleOrigin.Mapper
         /// <summary>
         /// 将对象Map到已有实例
         /// </summary>
-        public static TDestination Map<TSource, TDestination>(TSource source, TDestination dest)
+        public static TDestination? Map<TSource, TDestination>(TSource? source, TDestination? dest)
         {
             if (source == null) return dest;
             return dest != null ? ObjMapper.Map(source, dest) : ObjMapper.Map<TDestination>(source);

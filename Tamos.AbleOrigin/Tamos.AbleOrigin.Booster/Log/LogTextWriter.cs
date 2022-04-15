@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text;
-using Tamos.AbleOrigin.Log;
 
 namespace Tamos.AbleOrigin.Booster
 {

@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Tamos.AbleOrigin.Common
+namespace Tamos.AbleOrigin
 {
     public static class TypeExtend
     {
         #region Dictionary
 
-        /// <summary>
-        /// key不存在时返回默认值
+        /*/// <summary>
+        /// [可改用GetValueOrDefault]key不存在时返回默认值
         /// </summary>
         public static TValue GetValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
         {
-            TValue val;
-            return dictionary.TryGetValue(key, out val) ? val : default(TValue);
-        }
+            return dictionary.GetValueOrDefault(key, out var val) ? val : default;
+        }*/
 
         /// <summary>
         /// 添加/更新key对应的值
         /// </summary>
         public static TValue SetValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue val)
         {
-            if (dictionary.ContainsKey(key)) dictionary[key] = val;
+            //dictionary[key!] = val; 并发设置可能会报错
+            if (dictionary.ContainsKey(key!)) dictionary[key] = val;
             else dictionary.Add(key, val);
             return val;
         }
@@ -61,8 +61,8 @@ namespace Tamos.AbleOrigin.Common
         /// </summary>
         public static Action<T, TProperty> GetPropertySetter<T, TProperty>(Expression<Func<T, TProperty>> expression)
         {
-            var memberExpression = (MemberExpression) expression.Body;
-            var property = (PropertyInfo) memberExpression.Member;
+            var memberExpression = (MemberExpression)expression.Body;
+            var property = (PropertyInfo)memberExpression.Member;
 
             return GetPropertySetter<T, TProperty>(property);
         }
@@ -73,6 +73,7 @@ namespace Tamos.AbleOrigin.Common
         public static Action<T, TProperty> GetPropertySetter<T, TProperty>(PropertyInfo property)
         {
             var setMethod = property.GetSetMethod();
+            if (setMethod == null) throw new Exception($"属性“{property.Name}”缺少set方法");
 
             var parameterT = Expression.Parameter(typeof(T), "x");
             var parameterTProperty = Expression.Parameter(typeof(TProperty), "y");
@@ -98,5 +99,13 @@ namespace Tamos.AbleOrigin.Common
         }
 
         #endregion
+
+        /// <summary>
+        /// 获取FullName，为空（哪种类型？）则用Name。
+        /// </summary>
+        public static string GetFullName(this Type type)
+        {
+            return type.FullName ?? type.Name;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tamos.AbleOrigin.Configuration
+namespace Tamos.AbleOrigin
 {
     internal class NullConfigProvider : ICentralConfigProvider
     {

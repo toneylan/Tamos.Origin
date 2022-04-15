@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Tamos.AbleOrigin.Common;
 
 namespace Tamos.AbleOrigin.DataPersist
 {
@@ -39,9 +38,10 @@ namespace Tamos.AbleOrigin.DataPersist
         {
             TableName = entityType.GetTableName();
             //记录各列名Map
+            var identifier = StoreObjectIdentifier.Create(entityType, StoreObjectType.Table);
             foreach (var property in entityType.GetProperties())
             {
-                _colMap.Add(property.Name, property.GetColumnName());
+                _colMap.Add(property.Name, property.GetColumnName(identifier.GetValueOrDefault()));
             }
         }
 
@@ -50,7 +50,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// </summary>
         public string Col(string propName)
         {
-            return _colMap.GetValue(propName);
+            return _colMap[propName];
         }
     }
 }

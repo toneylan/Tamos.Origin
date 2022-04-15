@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.IOC
+﻿namespace Tamos.AbleOrigin
 {
     public enum LifeStyleType
     {

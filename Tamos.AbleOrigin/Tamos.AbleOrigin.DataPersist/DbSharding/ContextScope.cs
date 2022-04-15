@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Tamos.AbleOrigin.DataProto;
 
 namespace Tamos.AbleOrigin.DataPersist
 {
@@ -8,6 +9,9 @@ namespace Tamos.AbleOrigin.DataPersist
     /// </summary>
     public abstract class ContextScope
     {
+        //开始数据分表的时间，之前的数据会存在原始表中
+        internal static readonly DateTime ShardBeginTime = DataIdBuilder.ReferTime;
+
         protected const int SpanMilliseconds = 1;
 
         /// <summary>
@@ -23,7 +27,7 @@ namespace Tamos.AbleOrigin.DataPersist
         /// <summary>
         /// 分表后缀名
         /// </summary>
-        internal abstract string TablePostfix { get; }
+        internal abstract string TableSuffix { get; }
 
         #region 时间分表信息
 

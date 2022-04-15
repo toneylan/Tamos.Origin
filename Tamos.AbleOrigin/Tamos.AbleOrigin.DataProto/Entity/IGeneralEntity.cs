@@ -13,7 +13,7 @@ namespace Tamos.AbleOrigin.DataProto
         long Id { get; set; }
     }
 
-    /// <summary>
+    /*/// <summary>
     /// 子级对象，隶属某个父级对象。
     /// </summary>
     public interface IGeneralSubEntity : IGeneralEntity
@@ -33,5 +33,5 @@ namespace Tamos.AbleOrigin.DataProto
         /// 子级数据列表
         /// </summary>
         List<TSub> SubItems { get; set; }
-    }
+    }*/
 }

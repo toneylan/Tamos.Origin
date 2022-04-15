@@ -1,4 +1,4 @@
-﻿namespace Tamos.AbleOrigin.Configuration
+﻿namespace Tamos.AbleOrigin
 {
     public interface IConfigStorage
     {

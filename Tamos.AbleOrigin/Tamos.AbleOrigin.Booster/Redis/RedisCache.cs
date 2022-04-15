@@ -1,14 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CSRedis;
-using Tamos.AbleOrigin.Cache;
-using Tamos.AbleOrigin.Configuration;
-using Tamos.AbleOrigin.Log;
 
 namespace Tamos.AbleOrigin.Booster
 {
     internal class RedisCache : ICacheProvider, IDisposable
     {
-        internal static string HostAddress => ServiceAddressConfig.GetExternalSrvSet("RedisServer", "host.docker.internal:6379");
+        internal static string HostAddress => ServiceAddressConfig.GetExternalSvcSet("RedisServer", "host.docker.internal:6379");
 
         private readonly CSRedisClient _csredis;
 
@@ -24,6 +22,11 @@ namespace Tamos.AbleOrigin.Booster
             return _csredis.Get<T>(key);
         }
 
+        public Task<T?> GetAsync<T>(string key)
+        {
+            return _csredis.GetAsync<T>(key);
+        }
+
         public void Set<T>(string key, T data, TimeSpan? expireSpan)
         {
             var resTask = expireSpan != null ? _csredis.SetAsync(key, data, (int) expireSpan.Value.TotalSeconds) : _csredis.SetAsync(key, data);
@@ -31,12 +34,18 @@ namespace Tamos.AbleOrigin.Booster
             //else LogService.DebugFormat("缓存插入：{0}, {1}", key, expireSpan?.TotalMinutes);
         }
 
-        /// <summary>
-        /// 删除指定的缓存项
-        /// </summary>
+        
         public void Delete(string key)
         {
             _csredis.DelAsync(key);
+        }
+
+        /// <summary>
+        /// 删除多个缓存项
+        /// </summary>
+        public void Delete(string[] keys)
+        {
+            _csredis.DelAsync(keys);
         }
 
         #endregion

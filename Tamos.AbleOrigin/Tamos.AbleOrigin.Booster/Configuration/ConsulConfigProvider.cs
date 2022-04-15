@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Text;
 using Consul;
-using Tamos.AbleOrigin.Configuration;
-using Tamos.AbleOrigin.Log;
 
 namespace Tamos.AbleOrigin.Booster
 {
     internal class ConsulConfigProvider : ICentralConfigProvider, IDisposable
     {
-        private static string ConsulAddress => AppSettingProvider.InnerGetAppSet("CentralConfigAddress") ?? "http://127.0.0.1:8605/";
+        private static string ConsulAddress => AppSettingProvider.InnerGetAppSet("CentralConfigAddress") ?? "http://host.docker.internal:8500/";
         
-        //断网恢复后，ConsulClient可继续使用
+        //断网恢复后，ConsulClient可继续使用（可能是Http接口的原因）
         private readonly ConsulClient _client = new ConsulClient(conf => conf.Address = new Uri(ConsulAddress));
 
         public ConsulConfigProvider()
@@ -27,12 +25,12 @@ namespace Tamos.AbleOrigin.Booster
                 Value = Encoding.UTF8.GetBytes(value)
             };
 
-            //同步执行
-            var res = _client.KV.Put(putPair).Result;
-            return res.Response;
+            //执行
+            var res = _client.KV.Put(putPair);
+            return res.Result.Response;
         }
 
-        public string Get(string key)
+        public string? Get(string key)
         {
             //同步执行
             var res = _client.KV.Get(key).Result;

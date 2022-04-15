@@ -24,5 +24,14 @@ namespace Tamos.AbleOrigin.Booster
         }
 
         #endregion
+
+        /// <summary>
+        /// 地址解析
+        /// </summary>
+        public static (string host, int port) ParseAddress(string address)
+        {
+            var ipPort = address.Split(':');
+            return (ipPort[0], ipPort[1].ToInt());
+        }
     }
 }

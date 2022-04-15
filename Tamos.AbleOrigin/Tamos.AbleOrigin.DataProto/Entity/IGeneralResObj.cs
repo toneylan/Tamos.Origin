@@ -8,6 +8,6 @@
         /// <summary>
         /// 错误提示信息
         /// </summary>
-        string ErrorMsg { get; set; }
+        string? ErrorMsg { get; set; }
     }
 }

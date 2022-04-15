@@ -48,6 +48,14 @@ namespace Tamos.AbleOrigin.DataPersist
         bool Update(long id, Action<TEntity> setDbItem);*/
     }
 
+    /*/// <summary>
+    /// PO type FastAccessor
+    /// </summary>
+    public interface IFastPOAccessor<TPO> where TPO : IGeneralEntity
+    {
+        BaseDbContext Db { get; }
+    }*/
+
     #endregion
 
     #region IFastShardAccessor

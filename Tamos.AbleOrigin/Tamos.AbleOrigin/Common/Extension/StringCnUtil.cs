@@ -1,0 +1,134 @@
+﻿using System;
+using System.Text;
+
+namespace Tamos.AbleOrigin
+{
+    public static class StringCnUtil
+    {
+        private static readonly Encoding _encoding;
+
+        static StringCnUtil()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            _encoding = Encoding.GetEncoding("GB2312");
+        }
+
+        #region Constant
+
+        //from: https://www.it610.com/article/1305953698534428672.htm
+
+        private static readonly string[] _regionChar =
+        {
+            "CJWGNSPGCGNESYPBTYYZDXYKYGTDJNNJQMBSGZSCYJSYYQPGKBZGYCYWJKGKLJSWKPJQHYTWDDZLSGMRYPYWWCCKZNKYDG",
+            "TTNGJEYKKZYTCJNMCYLQLYPYQFQRPZSLWBTGKJFYXJWZLTBNCXJJJJZXDTTSQZYCDXXHGCKBPHFFSSWYBGMXLPBYLLLHLX",
+            "SPZMYJHSOJNGHDZQYKLGJHSGQZHXQGKEZZWYSCSCJXYEYXADZPMDSSMZJZQJYZCDJZWQJBDZBXGZNZCPWHKXHQKMWFBPBY",
+            "DTJZZKQHYLYGXFPTYJYYZPSZLFCHMQSHGMXXSXJJSDCSBBQBEFSJYHWWGZKPYLQBGLDLCCTNMAYDDKSSNGYCSGXLYZAYBN",
+            "PTSDKDYLHGYMYLCXPYCJNDQJWXQXFYYFJLEJBZRXCCQWQQSBNKYMGPLBMJRQCFLNYMYQMSQTRBCJTHZTQFRXQHXMJJCJLX",
+            "QGJMSHZKBSWYEMYLTXFSYDSGLYCJQXSJNQBSCTYHBFTDCYZDJWYGHQFRXWCKQKXEBPTLPXJZSRMEBWHJLBJSLYYSMDXLCL",
+            "QKXLHXJRZJMFQHXHWYWSBHTRXXGLHQHFNMNYKLDYXZPWLGGTMTCFPAJJZYLJTYANJGBJPLQGDZYQYAXBKYSECJSZNSLYZH",
+            "ZXLZCGHPXZHZNYTDSBCJKDLZAYFMYDLEBBGQYZKXGLDNDNYSKJSHDLYXBCGHXYPKDJMMZNGMMCLGWZSZXZJFZNMLZZTHCS",
+            "YDBDLLSCDDNLKJYKJSYCJLKOHQASDKNHCSGANHDAASHTCPLCPQYBSDMPJLPCJOQLCDHJJYSPRCHNWJNLHLYYQYYWZPTCZG",
+            "WWMZFFJQQQQYXACLBHKDJXDGMMYDJXZLLSYGXGKJRYWZWYCLZMSSJZLDBYDCFCXYHLXCHYZJQSFQAGMNYXPFRKSSBJLYXY",
+            "SYGLNSCMHCWWMNZJJLXXHCHSYDSTTXRYCYXBYHCSMXJSZNPWGPXXTAYBGAJCXLYSDCCWZOCWKCCSBNHCPDYZNFCYYTYCKX",
+            "KYBSQKKYTQQXFCWCHCYKELZQBSQYJQCCLMTHSYWHMKTLKJLYCXWHEQQHTQHZPQSQSCFYMMDMGBWHWLGSSLYSDLMLXPTHMJ",
+            "HWLJZYHZJXHTXJLHXRSWLWZJCBXMHZQXSDZPMGFCSGLSXYMJSHXPJXWMYQKSMYPLRTHBXFTPMHYXLCHLHLZYLXGSSSSTCL",
+            "SLDCLRPBHZHXYYFHBBGDMYCNQQWLQHJJZYWJZYEJJDHPBLQXTQKWHLCHQXAGTLXLJXMSLXHTZKZJECXJCJNMFBYCSFYWYB",
+            "JZGNYSDZSQYRSLJPCLPWXSDWEJBJCBCNAYTWGMPAPCLYQPCLZXSBNMSGGFNZJJBZSFZYNDXHPLQKZCZWALSBCCJXJYZGWK",
+            "YPSGXFZFCDKHJGXDLQFSGDSLQWZKXTMHSBGZMJZRGLYJBPMLMSXLZJQQHZYJCZYDJWBMJKLDDPMJEGXYHYLXHLQYQHKYCW",
+            "CJMYYXNATJHYCCXZPCQLBZWWYTWBQCMLPMYRJCCCXFPZNZZLJPLXXYZTZLGDLDCKLYRZZGQTGJHHHJLJAXFGFJZSLCFDQZ",
+            "LCLGJDJCSNCLLJPJQDCCLCJXMYZFTSXGCGSBRZXJQQCTZHGYQTJQQLZXJYLYLBCYAMCSTYLPDJBYREGKLZYZHLYSZQLZNW",
+            "CZCLLWJQJJJKDGJZOLBBZPPGLGHTGZXYGHZMYCNQSYCYHBHGXKAMTXYXNBSKYZZGJZLQJDFCJXDYGJQJJPMGWGJJJPKQSB",
+            "GBMMCJSSCLPQPDXCDYYKYFCJDDYYGYWRHJRTGZNYQLDKLJSZZGZQZJGDYKSHPZMTLCPWNJAFYZDJCNMWESCYGLBTZCGMSS",
+            "LLYXQSXSBSJSBBSGGHFJLWPMZJNLYYWDQSHZXTYYWHMCYHYWDBXBTLMSYYYFSXJCSDXXLHJHFSSXZQHFZMZCZTQCXZXRTT",
+            "DJHNNYZQQMNQDMMGYYDXMJGDHCDYZBFFALLZTDLTFXMXQZDNGWQDBDCZJDXBZGSQQDDJCMBKZFFXMKDMDSYYSZCMLJDSYN",
+            "SPRSKMKMPCKLGDBQTFZSWTFGGLYPLLJZHGJJGYPZLTCSMCNBTJBQFKTHBYZGKPBBYMTTSSXTBNPDKLEYCJNYCDYKZDDHQH",
+            "SDZSCTARLLTKZLGECLLKJLQJAQNBDKKGHPJTZQKSECSHALQFMMGJNLYJBBTMLYZXDCJPLDLPCQDHZYCBZSCZBZMSLJFLKR",
+            "ZJSNFRGJHXPDHYJYBZGDLQCSEZGXLBLGYXTWMABCHECMWYJYZLLJJYHLGBDJLSLYGKDZPZXJYYZLWCXSZFGWYYDLYHCLJS",
+            "CMBJHBLYZLYCBLYDPDQYSXQZBYTDKYXJYYCNRJMPDJGKLCLJBCTBJDDBBLBLCZQRPPXJCGLZCSHLTOLJNMDDDLNGKAQHQH",
+            "JGYKHEZNMSHRPHQQJCHGMFPRXHJGDYCHGHLYRZQLCYQJNZSQTKQJYMSZSWLCFQQQXYFGGYPTQWLMCRNFKKFSYYLQBMQAMM",
+            "MYXCTPSHCPTXXZZSMPHPSHMCLMLDQFYQXSZYJDJJZZHQPDSZGLSTJBCKBXYQZJSGPSXQZQZRQTBDKYXZKHHGFLBCSMDLDG",
+            "DZDBLZYYCXNNCSYBZBFGLZZXSWMSCCMQNJQSBDQSJTXXMBLTXZCLZSHZCXRQJGJYLXZFJPHYMZQQYDFQJJLZZNZJCDGZYG",
+            "CTXMZYSCTLKPHTXHTLBJXJLXSCDQXCBBTJFQZFSLTJBTKQBXXJJLJCHCZDBZJDCZJDCPRNPQCJPFCZLCLZXZDMXMPHJSGZ",
+            "GSZZQJYLWTJPFSYASMCJBTZKYCWMYTCSJJLJCQLWZMALBXYFBPNLSFHTGJWEJJXXGLLJSTGSHJQLZFKCGNNDSZFDEQFHBS",
+            "AQTGLLBXMMYGSZLDYDQMJJRGBJTKGDHGKBLQKBDMBYLXWCXYTTYBKMRTJZXQJBHLMHMJJZMQASLDCYXYQDLQCAFYWYXQHZ"
+        };
+        
+        #endregion
+
+        #region 首字母
+
+        /// <summary>
+        /// 获取拼音首字母
+        /// </summary>
+        public static string? FirstPinyin(this string? content)
+        {
+            if (content.IsNull()) return null;
+            
+            var res = new Span<char>(new char[content.Length]);
+            try
+            {
+                for (var i = 0; i < content.Length; i++)
+                {
+                    var bytes = _encoding.GetBytes(content, i, 1);
+                    var curChar = content[i];
+
+                    res[i] = bytes.Length == 2 ? GetChar(bytes[0], bytes[1], curChar) : curChar;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.ErrorFormat("解析中文首字母出错：{0}\n{1}", content, ex);
+            }
+            
+            return new string(res);
+        }
+
+        /// <summary>
+        /// 只能常用字，生僻字可能需要额外对照表。2万多汉字对应表的方案没选择，占用过大！
+        /// </summary>
+        private static char GetChar(byte c1, byte c2, char origin)
+        {
+            var n = (c1 << 8) + c2;
+            if (n <= 0xD7F9)
+            {
+                return n switch
+                {
+                    >= 0xB0A1 and <= 0xB0C4 => 'A',
+                    >= 0XB0C5 and <= 0XB2C0 => 'B',
+                    >= 0xB2C1 and <= 0xB4ED => 'C',
+                    >= 0xB4EE and <= 0xB6E9 => 'D',
+                    >= 0xB6EA and <= 0xB7A1 => 'E',
+                    >= 0xB7A2 and <= 0xB8C0 => 'F',
+                    >= 0xB8C1 and <= 0xB9FD => 'G',
+                    >= 0xB9FE and <= 0xBBF6 => 'H',
+                    >= 0xBBF7 and <= 0xBFA5 => 'J',
+                    >= 0xBFA6 and <= 0xC0AB => 'K',
+                    >= 0xC0AC and <= 0xC2E7 => 'L',
+                    >= 0xC2E8 and <= 0xC4C2 => 'M',
+                    >= 0xC4C3 and <= 0xC5B5 => 'N',
+                    >= 0xC5B6 and <= 0xC5BD => 'O',
+                    >= 0xC5BE and <= 0xC6D9 => 'P',
+                    >= 0xC6D1 and <= 0xC8BA => 'Q',
+                    >= 0xC8BB and <= 0xC8F5 => 'R',
+                    >= 0xC8F6 and <= 0xCBF9 => 'S',
+                    >= 0xCBFA and <= 0xCDD9 => 'T',
+                    >= 0xCDDA and <= 0xCEF3 => 'W',
+                    >= 0xCEF4 and <= 0xD1B8 => 'X',
+                    >= 0xD1B9 and <= 0xD4D0 => 'Y',
+                    >= 0xD4D1 and <= 0xD7F9 => 'Z',
+                    _ => origin
+                };
+            }
+
+            var b1 = (c1 & 0x7F) - 0x20 - 56;
+            var b2 = (c2 & 0x7F) - 0x20 - 1;
+            if (b1 is >= 0 and <= 31 && b2 is >= 0 and <= 93)
+            {
+                return _regionChar[b1][b2];
+            }
+            return origin;
+        }
+        
+        #endregion
+    }
+}

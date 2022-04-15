@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using Tamos.AbleOrigin.IOC;
-using Tamos.AbleOrigin.Log;
 
 namespace Tamos.AbleOrigin
 {
@@ -13,7 +12,7 @@ namespace Tamos.AbleOrigin
         /// <summary>
         /// Redis实现Provider
         /// </summary>
-        public static readonly IDistributedSrvProvider Provider = ServiceLocator.GetOrReflect<IDistributedSrvProvider>("RedisDistSrvProvider");
+        public static readonly IDistributedSrvProvider Provider = ServiceLocator.GetOrReflect<IDistributedSrvProvider>("RedisDistSrvProvider")!;
 
         #region Lock
 
@@ -25,7 +24,7 @@ namespace Tamos.AbleOrigin
         /// <param name="waitTimeout">等待获取锁的超时时间</param>
         /// <param name="resLock">获得的锁实例</param>
         /// <returns>是否获取锁成功</returns>
-        public static bool Lock(string name, TimeSpan lockTimeout, TimeSpan waitTimeout, out IDisposable resLock)
+        public static bool Lock(string name, TimeSpan lockTimeout, TimeSpan waitTimeout, [NotNullWhen(true)] out IDisposable? resLock)
         {
             //设置锁
             name = $"Lock:{name}";
@@ -39,7 +38,8 @@ namespace Tamos.AbleOrigin
                     hasLock = true;
                     break;
                 }
-                Thread.Sleep(1000);
+
+                if (waitTimeout.TotalMilliseconds > 0) Thread.Sleep(1000);
             } while (DateTime.Now.Subtract(startTime) <= waitTimeout);
 
             resLock = hasLock ? new DistributedLock {Name = name, Value = lockVal} : null;

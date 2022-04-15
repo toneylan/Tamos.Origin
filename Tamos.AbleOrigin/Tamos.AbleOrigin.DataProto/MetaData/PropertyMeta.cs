@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Tamos.AbleOrigin.Common;
 
 namespace Tamos.AbleOrigin.DataProto
 {
@@ -24,12 +23,17 @@ namespace Tamos.AbleOrigin.DataProto
         /// <summary>
         /// 获取实例中的属性值
         /// </summary>
-        public abstract object GetValue(TEnt entity);
+        public abstract object? GetValue(TEnt entity);
+
+        /// <summary>
+        /// 获取实例的属性值，并转为string（避免object装箱）
+        /// </summary>
+        public abstract string? GetValueAsString(TEnt entity);
 
         /// <summary>
         /// 实体中属性值是否有效
         /// </summary>
-        internal abstract string Validate(TEnt entity);
+        internal abstract string? Validate(TEnt entity);
     }
 
     /// <summary>
@@ -41,7 +45,7 @@ namespace Tamos.AbleOrigin.DataProto
         public Func<TEnt, TProp> Getter { get; }
         public Action<TEnt, TProp> Setter { get; }
 
-        private PropertyValidator<TProp> _validator;
+        private PropertyValidator<TProp>? _validator;
         private PropertyValidator<TProp> Validator => _validator ??= EntityMeta.GetValidator(this);
         
         #region Ctor
@@ -68,13 +72,18 @@ namespace Tamos.AbleOrigin.DataProto
 
         #region Get & Validate
 
-        public override object GetValue(TEnt entity)
+        public override object? GetValue(TEnt entity)
         {
             return Getter(entity);
         }
 
+        public override string? GetValueAsString(TEnt entity)
+        {
+            return Getter(entity)?.ToString();
+        }
+
         //依据PropMetaAttribute设置检查有效性
-        internal override string Validate(TEnt entity)
+        internal override string? Validate(TEnt entity)
         {
             //忽略未设置检查条件的
             if (!AttrSet.IsRequired && AttrSet.MaxValue == 0) return null;

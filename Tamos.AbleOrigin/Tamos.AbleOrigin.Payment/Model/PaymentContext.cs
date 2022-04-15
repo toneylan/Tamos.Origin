@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tamos.AbleOrigin.Common;
 
 namespace Tamos.AbleOrigin.Payment
 {
@@ -10,9 +9,9 @@ namespace Tamos.AbleOrigin.Payment
     public class PaymentContext
     {
         /// <summary>
-        /// 支付流水号，通常对应支付平台的“out_trade_no”参数
+        /// 支付流水号，对应支付平台的“商户订单号”
         /// </summary>
-        public string TransactionId { get; set; }
+        public long TransId { get; set; }
         
         /// <summary>
         /// 需要支付的总金额
@@ -20,14 +19,14 @@ namespace Tamos.AbleOrigin.Payment
         public decimal TotalFee { get; set; }
 
         /// <summary>
-        /// 支付超时时间
+        /// 支付超时-秒
         /// </summary>
-        public DateTime PayExpireTime { get; set; }
+        public int TimeoutSeconds { get; set; }
 
         /// <summary>
-        /// 付款码，如微信、支付宝的支付授权码
+        /// 微信、支付宝等付款码
         /// </summary>
-        public string PayCode { get; set; }
+        public string? PayCode { get; set; }
 
         /// <summary>
         /// 支付信息标题
@@ -37,25 +36,35 @@ namespace Tamos.AbleOrigin.Payment
         /// <summary>
         /// 支付信息描述
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// 操作人员
+        /// </summary>
+        public string? Operator { get; set; }
+
+        /// <summary>
+        /// 支付后回跳的Url，适用于跳转到支付网关的场景。
+        /// </summary>
+        public string? ReturnUrl { get; set; }
 
         #region Para store
 
-        private Dictionary<string, string> _paras;
+        private Dictionary<string, string>? _paras;
 
         /// <summary>
         /// get/set 其他支付参数
         /// </summary>
-        public string this[string key]
+        public string? this[string key]
         {
-            get => (_paras ??= new Dictionary<string, string>()).GetValue(key);
+            get => (_paras ??= new Dictionary<string, string>()).GetValueOrDefault(key);
             set => (_paras ??= new Dictionary<string, string>()).SetValue(key, value);
         }
 
         #endregion
     }
 
-    public static class PayContextPara
+    /*public static class PayContextPara
     {
         public const string UserId = "UserId";
         //public const string TradeType = "TradeType";
@@ -64,5 +73,5 @@ namespace Tamos.AbleOrigin.Payment
 
         //public const string DeviceInfo = "DeviceInfo";
 
-    }
+    }*/
 }

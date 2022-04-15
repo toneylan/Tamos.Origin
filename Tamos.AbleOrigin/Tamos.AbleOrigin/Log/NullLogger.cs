@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
-namespace Tamos.AbleOrigin.Log
+namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// 没有日志实现类时的，空实现
@@ -66,7 +65,7 @@ namespace Tamos.AbleOrigin.Log
 
         private void WriteLine(string message)
         {
-            File.AppendAllText(Path.Combine(LogsDir, "nulllog.txt"), message);
+            File.AppendAllText(Path.Combine(LogsDir, "nulllog.txt"), message + "\n");
         }
     }
 }

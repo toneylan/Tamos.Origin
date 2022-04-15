@@ -1,17 +1,12 @@
 ﻿using System;
-using Tamos.AbleOrigin.Common;
-using Tamos.AbleOrigin.Configuration;
 
 namespace Tamos.AbleOrigin.DataPersist
 {
     public class YearScope : ContextScope
     {
-        //开始数据分片的时间，之前的数据会统一存在原始表中
-        public static readonly DateTime ShardBeginTime = Utility.StrToDate(CentralConfiguration.Get("ExternalService/DbShardBeginTime"), new DateTime(2020, 1, 1));
-
         internal override ShardScopeType ScopeType => ShardScopeType.Year;
         
-        internal override string TablePostfix => OriginalPart ? null : StartDate.ToString("_yy");
+        internal override string? TableSuffix => OriginalPart ? null : StartDate.ToString("_yy");
         
         #region Create scope
         

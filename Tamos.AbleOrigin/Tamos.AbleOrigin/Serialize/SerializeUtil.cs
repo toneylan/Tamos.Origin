@@ -1,9 +1,7 @@
 ﻿using System;
-using Tamos.AbleOrigin.Common;
-using Tamos.AbleOrigin.IOC;
-using Tamos.AbleOrigin.Log;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Tamos.AbleOrigin.Serialize
+namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// 序列化工具
@@ -23,7 +21,8 @@ namespace Tamos.AbleOrigin.Serialize
         /// <summary>
         /// 序列化对象为Json字符串
         /// </summary>
-        public static string ToJson(object obj)
+        [return: NotNullIfNotNull("obj")]
+        public static string? ToJson(object? obj)
         {
             if (obj == null) return null;
             try
@@ -40,9 +39,9 @@ namespace Tamos.AbleOrigin.Serialize
         /// <summary>
         /// 从Json字符串反序列化到对象
         /// </summary>
-        public static T FromJson<T>(string jsonStr)
+        public static T? FromJson<T>(string? jsonStr)
         {
-            if (string.IsNullOrEmpty(jsonStr)) return default(T);
+            if (string.IsNullOrEmpty(jsonStr)) return default;
             try
             {
                 return JsonSerializer.Deserialize<T>(jsonStr);
@@ -50,7 +49,7 @@ namespace Tamos.AbleOrigin.Serialize
             catch (Exception e)
             {
                 LogService.Error(e);
-                return default(T);
+                return default;
             }
         }
 
@@ -67,7 +66,7 @@ namespace Tamos.AbleOrigin.Serialize
                 return anonymousObject;
             }
         }*/
-        
+
         #endregion
     }
 }

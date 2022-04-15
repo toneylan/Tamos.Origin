@@ -1,60 +1,62 @@
-﻿using Tamos.AbleOrigin.Common;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Tamos.AbleOrigin.Configuration
+namespace Tamos.AbleOrigin
 {
     /// <summary>
     /// 服务地址配置读取
     /// </summary>
-    public static class ServiceAddressConfig
+    public class ServiceAddressConfig : BaseCatalogConfig<ServiceAddressConfig>
     {
-        private const string Catalog = "ServiceAddress";
+        private const string CurCatalog = "ServiceAddress";
+        protected override string Catalog => CurCatalog;
+
         private const string ExternalCatalog = "ExternalService";
 
         #region App service
-        
+
         /// <summary>
-        /// 获取当前部署的服务名称，同一服务部署多个实例时，保持唯一，如：MimsDataBroker1，MimsDataBroker2
+        /// 获取部署的实例名称，如Cluster模式多实例时：central-svc1，central-svc2 ……
         /// </summary>
-        public static string GetDeployServiceName(string defaultName)
+        public static string? GetDeployInstanceName(string? defaultName)
         {
-            return CentralConfiguration.GetAppSetting("DeployServiceName", defaultName);
+            return CentralConfiguration.GetAppSetting("DeployInstanceName", defaultName);
         }
 
         /// <summary>
-        /// 通过服务名获取地址。（Consul目录：ServiceAddress）
+        /// 按服务名获取地址。配置目录：ServiceAddress
         /// </summary>
-        public static string GetAddress(string srvName, string defaultAddress, bool readAppSetting = false)
+        public static string GetAddress(string svcName, string defaultAddress) //, bool readAppSetting = false
         {
-            var catKey = $"{Catalog}/{srvName}";
-            return readAppSetting
-                ? CentralConfiguration.GetAppSetting(srvName, CentralConfiguration.Get(catKey, defaultAddress))
-                : CentralConfiguration.Get(catKey, defaultAddress);
+            var setKey = $"{CurCatalog}/{svcName}";
+
+            //(readAppSetting ? CentralConfiguration.GetAppSetting(svcName, CentralConfiguration.Get(setKey, defaultAddress)) : null) ??
+            return CentralConfiguration.Get(setKey, defaultAddress);
         }
 
         /// <summary>
-        /// 通过部署的服务名，获取服务地址配置
+        /// 通过当前实例名称，获取对应的地址配置。
         /// </summary>
-        public static string GetAddressByDeployName(string defaultAddress)
+        //[return: NotNullIfNotNull("defaultAddress")]
+        public static string GetDeployInstanceAddress(string defaultAddress)
         {
-            var depSrvName = GetDeployServiceName(null);
-            if (string.IsNullOrEmpty(depSrvName)) return defaultAddress;
-
-            return GetAddress(depSrvName, defaultAddress);
+            var depInsName = GetDeployInstanceName(null);
+            return depInsName.IsNull() ? defaultAddress : GetAddress(depInsName, defaultAddress);
         }
 
         #endregion
 
         /// <summary>
-        /// 获取外部服务设置，如MQ、缓存等。（Consul目录：ExternalService）。<br />
-        /// readAppSetting 是否优先读取本地配置。
+        /// 获取外部服务配置，如MQ、缓存等中间件。配置目录：ExternalService<br />
         /// </summary>
-        public static string GetExternalSrvSet(string key, string defaultSet = null, bool readAppSetting = false)
+        [return: NotNullIfNotNull("defaultSet")]
+        public static string? GetExternalSvcSet(string key, string? defaultSet = null) //readAppSetting 是否优先读取本地配置。
         {
-            if (readAppSetting)
+            /*if (readAppSetting)
             {
                 var localSet = CentralConfiguration.GetAppSetting(key);
                 if (localSet.NotNull()) return localSet;
-            }
+            }*/
+
             return CentralConfiguration.Get($"{ExternalCatalog}/{key}", defaultSet);
         }
     }
