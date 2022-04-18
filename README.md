@@ -16,5 +16,5 @@
 - 调用层直接从IOC获取接口实例即可，几乎感知不到底层Grpc。
 - 省去了proto文件编写，直接用C#接口来定义服务，得益于：[protobuf-net.Grpc](https://github.com/protobuf-net/protobuf-net.Grpc)。
 
-#### 缓存追踪
+#### 缓存追踪 Tamos.AbleOrigin/Cache
 - 解决缓存数据的刷新问题。实现了多个实体属性组合，作为缓存Key的自动清除。
